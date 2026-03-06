@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Purchasing & Vendor Management</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Open+Sans:wght@800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #003967;
+  --neutral-800: #2e3a45;
+  --neutral-200: #e6e9ed;
+  --neutral-100: #f5f7f9;
+  --pale-blue: #eaf3ff;
+  --pale-blue-dark: #bbcfec;
+  --pale-blue-darker: #95b9ec;
+  --pale-blue-accent: #466086;
+  --mint: #b0d6c9;
+  --mint-dark: #9cccbb;
+  --mint-accent: #619381;
+  --mint-light: #e5fff6;
+  --mint-lighter: #edfff9;
+  --apricot: #e4c197;
+  --apricot-dark: #ddb17b;
+  --apricot-accent: #b3864e;
+  --apricot-darker: #ae7b3b;
+  --apricot-light: #fff9f1;
+  --apricot-border: #f5d3aa;
+  --ecru: #cfc9bb;
+  --ecru-dark: #c0b9a7;
+  --ecru-accent: #a28f63;
+  --ecru-light: #f9f6f0;
+  --lilac: #cab7c4;
+  --lilac-dark: #b8a0b1;
+  --lilac-accent: #6b355a;
+  --lilac-light: #f4e5ef;
+  --yellow: #f1e9a5;
+  --yellow-dark: #ddcd87;
+  --yellow-accent: #746f3c;
+  --yellow-light: #fffdef;
+  --body-text: #3b3b3b;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', sans-serif; background: #e8e8e8; color: var(--navy); }
+img { display: block; max-width: 100%; }
+
+/* Layout */
+.page-wrapper { display: flex; flex-direction: column; min-height: 100vh; background: white; max-width: 1920px; margin: 0 auto; }
+.main-layout { display: flex; flex: 1; }
+.sidebar { width: 460px; min-width: 460px; background: var(--neutral-100); border-right: 1px solid var(--neutral-200); padding: 24px 16px; overflow-y: auto; }
+.content-area { flex: 1; padding: 10px 16px 40px 16px; max-width: 1145px; }
+
+/* Navbar */
+.navbar { display: flex; align-items: center; justify-content: space-between; padding: 12px 32px; border-bottom: 1px solid var(--neutral-200); background: white; }
+.navbar-logo { height: 40px; }
+.navbar-links { display: flex; gap: 40px; align-items: center; }
+.navbar-links a { text-decoration: none; color: var(--navy); font-size: 14px; font-weight: 600; }
+.navbar-search { display: flex; align-items: center; gap: 8px; background: var(--neutral-100); border-radius: 8px; padding: 8px 16px; }
+.navbar-search input { border: none; background: transparent; font-size: 14px; outline: none; width: 200px; }
+.navbar-icons { display: flex; gap: 16px; align-items: center; }
+
+/* Tab bar */
+.tab-bar { display: flex; align-items: center; gap: 0; border-bottom: 1px solid var(--neutral-200); padding: 0 32px; background: white; }
+.tab-item { padding: 12px 24px; font-size: 14px; font-weight: 600; color: var(--navy); cursor: pointer; border-bottom: 3px solid transparent; text-decoration: none; white-space: nowrap; }
+.tab-item.active { border-bottom-color: var(--navy); }
+.tab-item:hover { background: var(--neutral-100); }
+
+/* Sidebar nav */
+.sidebar-section { margin-bottom: 24px; }
+.sidebar-title { font-size: 14px; font-weight: 600; color: var(--navy); padding: 8px 12px; margin-bottom: 4px; }
+.sidebar-item { display: flex; align-items: center; padding: 8px 12px; font-size: 12px; font-weight: 600; color: var(--navy); border-radius: 8px; cursor: pointer; margin-bottom: 2px; text-decoration: none; }
+.sidebar-item:hover { background: rgba(0,0,0,0.04); }
+.sidebar-item.active { background: var(--pale-blue); }
+.sidebar-item.sub { padding-left: 28px; font-weight: 400; }
+.sidebar-group-title { font-size: 12px; font-weight: 600; color: var(--navy); padding: 10px 12px 4px; }
+.sidebar-divider { height: 1px; background: var(--neutral-200); margin: 8px 0; }
+
+/* Page title */
+.page-title { font-size: 40px; font-weight: 400; line-height: 60px; color: var(--navy); margin-bottom: 10px; }
+
+/* Section banner */
+.section-banner { background: var(--navy); border-radius: 0 12px 12px 12px; padding: 32px 40px 32px 55px; display: flex; align-items: center; gap: 20px; position: relative; overflow: hidden; margin-bottom: 0; }
+.section-banner-title { font-size: 20px; font-weight: 500; color: white; line-height: 30px; position: relative; z-index: 1; }
+.section-banner-icon { width: 47px; height: 48px; position: relative; z-index: 1; }
+.section-banner-circle { position: absolute; right: -100px; top: 50%; transform: translateY(-50%); width: 790px; height: 790px; border-radius: 50%; opacity: 0.06; border: 1px solid rgba(255,255,255,0.3); }
+
+/* Sub-section header */
+.sub-header { width: 100%; height: 108px; border-radius: 8px; background: var(--pale-blue); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; margin-bottom: 0; }
+.sub-header-title { font-size: 20px; font-weight: 500; color: var(--navy); line-height: 30px; text-align: center; position: relative; z-index: 1; }
+.sub-header-shape { position: absolute; opacity: 0.3; background: var(--pale-blue-dark); border-radius: 16px; transform: rotate(32.5deg) skewX(-25deg) scaleY(0.91); width: 412px; height: 378px; }
+
+/* Section content */
+.section-content { display: flex; flex-direction: column; gap: 60px; width: 100%; }
+.sub-section { border-bottom: 1px solid var(--neutral-200); padding-bottom: 40px; display: flex; flex-direction: column; gap: 24px; }
+.sub-section:last-child { border-bottom: none; }
+.section-body { font-size: 16px; line-height: 24px; color: var(--body-text); }
+.section-body-title { font-size: 16px; font-weight: 600; line-height: 24px; color: var(--navy); }
+.section-subtitle { font-size: 20px; font-weight: 500; line-height: 30px; color: var(--navy); }
+
+/* Checklist row */
+.checklist-row { display: flex; gap: 24px; align-items: center; justify-content: center; }
+.checklist-item { background: var(--neutral-100); border-radius: 8px; padding: 12px; display: flex; flex-direction: column; align-items: center; gap: 14px; width: 175px; }
+.checklist-icon { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; padding: 10px; }
+.checklist-icon img { width: 20px; height: 20px; }
+.checklist-text { font-size: 16px; line-height: 24px; color: var(--navy); text-align: center; }
+
+/* Step cards (vertical numbered pills) */
+.steps-container { display: flex; flex-direction: column; gap: 24px; }
+.step-card { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+.step-number { width: 48px; height: 48px; border-radius: 24px; display: flex; align-items: center; justify-content: center; padding: 5px 5px 4px; align-self: center; }
+.step-number-inner { width: 38px; height: 38px; border-radius: 100px; border: 4px solid; display: flex; align-items: center; justify-content: center; }
+.step-number-text { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 18px; line-height: 24px; }
+.step-pill { border-radius: 100px; padding: 12px 32px; display: flex; gap: 16px; align-items: center; }
+.step-pill-title { font-size: 16px; line-height: 24px; color: var(--navy); margin-bottom: 0; }
+.step-pill ul { list-style: disc; padding-left: 24px; margin: 0; }
+.step-pill li { font-size: 16px; line-height: 24px; color: var(--navy); }
+.step-pill li span { font-weight: 400; }
+
+/* Purpose / numbered cards (horizontal) */
+.purpose-cards { display: flex; justify-content: space-between; gap: 12px; width: 100%; }
+.purpose-card { display: flex; gap: 12px; align-items: center; }
+.purpose-badge { width: 48px; height: 48px; border-radius: 0 8px 8px 8px; display: flex; align-items: center; justify-content: center; padding: 5px; flex-shrink: 0; }
+.purpose-badge-inner { width: 38px; border-radius: 0 8px 8px 8px; border: 4px solid; display: flex; align-items: center; justify-content: center; padding: 8px; }
+.purpose-badge-text { font-family: 'Open Sans', sans-serif; font-weight: 800; font-size: 18px; line-height: 24px; }
+.purpose-text-box { width: 280px; border-radius: 0 8px 8px 8px; padding: 8px 16px; font-size: 16px; line-height: 24px; display: flex; align-items: center; }
+
+/* AP consideration cards (icon + text) */
+.ap-cards-grid { display: flex; flex-direction: column; gap: 24px; align-items: center; }
+.ap-cards-row { display: flex; gap: 24px; }
+.ap-card { display: flex; gap: 12px; align-items: center; }
+.ap-badge { width: 48px; height: 48px; border-radius: 0 8px 8px 8px; display: flex; align-items: center; justify-content: center; padding: 5px; flex-shrink: 0; }
+.ap-badge-inner { width: 38px; border-radius: 0 8px 8px 8px; border: 4px solid; display: flex; align-items: center; justify-content: center; padding: 10px; }
+.ap-badge-inner img { width: 20px; height: 20px; }
+.ap-text-box { width: 340px; border-radius: 0 8px 8px 8px; padding: 8px 16px; font-size: 16px; line-height: 24px; color: var(--navy); }
+
+/* Process map image */
+.process-map { width: 100%; border-radius: 8px; overflow: hidden; }
+.process-map img { width: 100%; height: auto; object-fit: cover; }
+
+/* Creating PR Steps */
+.pr-steps { display: flex; flex-direction: column; gap: 24px; }
+.pr-step { display: flex; flex-direction: column; gap: 12px; }
+.pr-step-header { display: flex; gap: 12px; align-items: center; }
+.pr-step-badge { width: 48px; height: 48px; border-radius: 0 8px 8px 8px; display: flex; align-items: center; justify-content: center; padding: 5px; flex-shrink: 0; }
+.pr-step-badge-inner { width: 38px; border-radius: 0 8px 8px 8px; border: 4px solid; display: flex; align-items: center; justify-content: center; padding: 8px; }
+.pr-step-title-box { border-radius: 0 8px 8px 8px; padding: 8px 16px; font-size: 16px; line-height: 24px; font-weight: 600; color: var(--navy); }
+.pr-step-content { padding-left: 60px; font-size: 16px; line-height: 24px; color: var(--navy); }
+.pr-step-content ul { list-style: disc; padding-left: 24px; }
+.pr-step-content li { margin-bottom: 4px; }
+.pr-step-content strong { font-weight: 600; }
+
+/* Approval workflow */
+.workflow-info { display: flex; flex-direction: column; gap: 24px; }
+.workflow-box { background: var(--neutral-100); border-radius: 8px; padding: 16px 24px; }
+.workflow-box p { font-size: 16px; line-height: 24px; color: var(--navy); }
+
+/* Troubleshooting cards */
+.troubleshoot-grid { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.troubleshoot-card { width: 263px; height: 275px; position: relative; }
+.troubleshoot-shadow { position: absolute; border-radius: 0 8px 8px 8px; top: 14px; left: 10px; right: -5px; bottom: -12px; }
+.troubleshoot-body { position: relative; border-radius: 0 8px 8px 8px; padding: 6px 16px; display: flex; flex-direction: column; z-index: 1; }
+.troubleshoot-inner { display: flex; flex-direction: column; gap: 16px; padding: 8px 0; }
+.troubleshoot-num { width: 38px; border-radius: 0 4px 4px 4px; padding: 8px; font-family: 'Open Sans', sans-serif; font-weight: 800; font-size: 24px; line-height: 24px; text-align: center; position: relative; }
+.troubleshoot-num-shadow { position: absolute; left: 10px; top: 6px; }
+.troubleshoot-title { font-size: 16px; font-weight: 600; line-height: 24px; color: var(--navy); }
+.troubleshoot-text { border-radius: 4px; padding: 8px; font-size: 16px; line-height: 24px; color: var(--navy); height: 148px; }
+
+/* Quick reference checklist (bottom) */
+.ref-checklist { display: flex; flex-direction: column; gap: 16px; }
+
+/* PO best practices */
+.best-practices { display: flex; flex-direction: column; gap: 24px; }
+.best-practice-item { display: flex; gap: 12px; align-items: center; }
+
+/* PO Checklist at bottom */
+.po-checklist-grid { display: flex; flex-direction: column; gap: 16px; }
+.po-checklist-row { display: flex; gap: 24px; }
+.po-checklist-item { background: var(--neutral-100); border-radius: 8px; padding: 12px; display: flex; flex-direction: column; align-items: center; gap: 14px; flex: 1; }
+.po-checklist-icon { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.po-checklist-text { font-size: 16px; line-height: 24px; color: var(--navy); text-align: center; }
+
+/* Utility */
+.gap-16 { display: flex; flex-direction: column; gap: 16px; }
+.gap-24 { display: flex; flex-direction: column; gap: 24px; }
+.gap-40 { display: flex; flex-direction: column; gap: 40px; }
+.w-full { width: 100%; }
+a { color: var(--navy); }
+</style>
+</head>
+<body>
+
+<!-- ==================== NAVBAR ==================== -->
+<div class="page-wrapper">
+  <nav class="navbar">
+    <img src="https://www.figma.com/api/mcp/asset/56c1f571-b951-4180-a2fe-9ba087977e6c" alt="Logo" class="navbar-logo">
+    <div class="navbar-links">
+      <a href="#">AP Processes</a>
+      <a href="#">Chart of Accounts</a>
+      <a href="#">Budget Management</a>
+      <a href="#">Tax & Compliance</a>
+      <a href="#">Month-End</a>
+      <a href="#">Reporting & Analytics</a>
+      <a href="#">Systems & Tools</a>
+      <a href="#">Contacts & Support</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:16px;">
+      <div class="navbar-search">
+        <img src="https://www.figma.com/api/mcp/asset/445c4c6f-b705-401c-bfd1-f625df2e6a57" alt="" style="width:20px;height:20px;">
+        <input type="text" placeholder="Search...">
+      </div>
+      <img src="https://www.figma.com/api/mcp/asset/693393ad-e907-4e11-920f-c8c226dfd3da" alt="" style="width:24px;height:24px;cursor:pointer;">
+    </div>
+  </nav>
+
+  <!-- ==================== TAB BAR ==================== -->
+  <div class="tab-bar">
+    <a class="tab-item active" href="#">Purchasing & Vendor Management</a>
+    <a class="tab-item" href="#">Invoice Processing</a>
+    <a class="tab-item" href="#">Reconciliations & Reporting</a>
+  </div>
+
+  <!-- ==================== MAIN LAYOUT ==================== -->
+  <div class="main-layout">
+
+    <!-- ==================== SIDEBAR ==================== -->
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-title">Introduction</div>
+        <a class="sidebar-item" href="#">Purchasing & Vendor Management</a>
+        <a class="sidebar-item sub" href="#">What Finance Needs to Know</a>
+        <a class="sidebar-item sub" href="#">How Purchasing Works at SCCWA?</a>
+        <a class="sidebar-item sub" href="#">Finance & AP Responsibilities</a>
+        <a class="sidebar-item sub" href="#">Common Scenarios & AP Actions</a>
+        <a class="sidebar-item sub" href="#">Best Practices for Finance Operations</a>
+      </div>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">Vendor Management</div>
+        <a class="sidebar-item sub" href="#">Vendor Onboarding</a>
+        <a class="sidebar-item sub" href="#">Vendor Detail Changes</a>
+        <a class="sidebar-item sub" href="#">Vendor Communications</a>
+      </div>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">Purchase-to-Pay</div>
+        <a class="sidebar-item active" href="#">PR-to-PO-to-Three-Way Matching</a>
+        <a class="sidebar-item sub" href="#">Purchase Requisitions (PR)</a>
+        <a class="sidebar-item sub" href="#">Purchase Order (PO)</a>
+        <a class="sidebar-item sub" href="#">Receipting a PO</a>
+        <a class="sidebar-item sub" href="#">Purchasing Variances</a>
+        <a class="sidebar-item sub" href="#">Punch Out</a>
+      </div>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">FMI Work Orders</div>
+      </div>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">Capital Expenditure</div>
+        <a class="sidebar-item sub" href="#">What is CapEx?</a>
+        <a class="sidebar-item sub" href="#">Standard Capital Expenditure Process</a>
+        <a class="sidebar-item sub" href="#">Asset & Infrastructure Capital Expenditure</a>
+      </div>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">WIP Staging & GRNI Process</div>
+        <a class="sidebar-item sub" href="#">WIP Staging</a>
+        <a class="sidebar-item sub" href="#">Cost WIP Capture</a>
+      </div>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">Quick Links</div>
+        <a class="sidebar-item sub" href="#">How to Use This Manual</a>
+      </div>
+    </aside>
+
+    <!-- ==================== CONTENT ==================== -->
+    <main class="content-area">
+      <h1 class="page-title">Purchasing & Vendor Management</h1>
+
+      <div class="section-content">
+
+        <!-- ==================== PURCHASE-TO-PAY BANNER ==================== -->
+        <div class="section-banner">
+          <img src="https://www.figma.com/api/mcp/asset/d0751fc7-6337-4894-ad81-544cb26395a6" alt="Map" class="section-banner-icon">
+          <span class="section-banner-title">Purchase-to-Pay</span>
+          <div class="section-banner-circle"></div>
+        </div>
+
+        <!-- ========================================= -->
+        <!-- SECTION 1: PR-to-PO-to-Three-Way Matching -->
+        <!-- ========================================= -->
+        <div class="gap-40">
+          <div class="sub-section">
+
+            <!-- Sub-section header -->
+            <div class="sub-header">
+              <div class="sub-header-shape" style="right:-30%;top:-140%;opacity:0.4;"></div>
+              <div class="sub-header-shape" style="right:-40%;top:-135%;opacity:0.15;"></div>
+              <span class="sub-header-title">PR-to-PO-to-Three-Way Matching</span>
+            </div>
+
+            <!-- Subtitle -->
+            <p class="section-subtitle">PR to PO to Three-Way Matching</p>
+
+            <!-- Description -->
+            <p class="section-body">This process ensures that purchases are properly approved, goods/services are receipted, and invoices are matched accurately before payment. It supports financial control, audit readiness, and vendor trust.</p>
+
+            <!-- Process Map Label -->
+            <p class="section-body-title">PR-PO-Three-Way Matching Process Map</p>
+
+            <!-- Process Map Image -->
+            <div class="process-map">
+              <img src="https://www.figma.com/api/mcp/asset/f16c4c14-014f-4749-b37e-7f8874eb9b96" alt="PR-PO-Three-Way Matching Process Map">
+            </div>
+
+            <!-- Checklist Row -->
+            <div class="checklist-row">
+              <div class="checklist-item">
+                <div class="checklist-icon" style="background:var(--apricot);">
+                  <img src="https://www.figma.com/api/mcp/asset/90d3b0c6-ecf1-4966-89a1-dbaf846905e1" alt="check">
+                </div>
+                <div class="checklist-text">Item/Service<br>Details Entered</div>
+              </div>
+              <div class="checklist-item">
+                <div class="checklist-icon" style="background:var(--mint);">
+                  <img src="https://www.figma.com/api/mcp/asset/90d3b0c6-ecf1-4966-89a1-dbaf846905e1" alt="check">
+                </div>
+                <div class="checklist-text">GL Code and Cost Centre Correct</div>
+              </div>
+              <div class="checklist-item">
+                <div class="checklist-icon" style="background:var(--pale-blue-dark);">
+                  <img src="https://www.figma.com/api/mcp/asset/90d3b0c6-ecf1-4966-89a1-dbaf846905e1" alt="check">
+                </div>
+                <div class="checklist-text">Supporting Documents Attached</div>
+              </div>
+              <div class="checklist-item">
+                <div class="checklist-icon" style="background:var(--ecru);">
+                  <img src="https://www.figma.com/api/mcp/asset/90d3b0c6-ecf1-4966-89a1-dbaf846905e1" alt="check">
+                </div>
+                <div class="checklist-text">Submitted for Approval</div>
+              </div>
+              <div class="checklist-item">
+                <div class="checklist-icon" style="background:var(--lilac);">
+                  <img src="https://www.figma.com/api/mcp/asset/90d3b0c6-ecf1-4966-89a1-dbaf846905e1" alt="check">
+                </div>
+                <div class="checklist-text">Track Status in<br>ARM</div>
+              </div>
+            </div>
+
+            <!-- Step-by-Step Guide heading -->
+            <p class="section-body-title">Step-by-Step Guide</p>
+
+            <!-- 6 Step Cards -->
+            <div class="steps-container">
+
+              <!-- Step 1: Apricot -->
+              <div class="step-card">
+                <div class="step-number" style="background:var(--apricot-accent);">
+                  <div class="step-number-inner" style="background:var(--apricot-light);border-color:var(--apricot-border);">
+                    <span class="step-number-text" style="color:var(--apricot-accent);">1</span>
+                  </div>
+                </div>
+                <div class="step-pill" style="background:var(--apricot-light);">
+                  <div>
+                    <p class="step-pill-title">Raise a Purchase Requisition (PR)</p>
+                    <ul>
+                      <li><span>Initiated in Epicor ARM by the requester</span></li>
+                      <li><span>Includes item/service details, cost centre, and justification.</span></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Step 2: Mint -->
+              <div class="step-card">
+                <div class="step-number" style="background:var(--mint-accent);">
+                  <div class="step-number-inner" style="background:var(--mint-light);border-color:var(--mint);">
+                    <span class="step-number-text" style="color:var(--mint-accent);">2</span>
+                  </div>
+                </div>
+                <div class="step-pill" style="background:var(--mint-light);">
+                  <div>
+                    <p class="step-pill-title">PR Approval Workflow</p>
+                    <ul>
+                      <li><span>Approval trees are preset based on amount thresholds and cost centre codes</span></li>
+                      <li><span>Approvers are notified via Epicor or email</span></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Step 3: Pale Blue -->
+              <div class="step-card">
+                <div class="step-number" style="background:var(--pale-blue-accent);">
+                  <div class="step-number-inner" style="background:var(--pale-blue);border-color:var(--pale-blue-dark);">
+                    <span class="step-number-text" style="color:var(--pale-blue-accent);">3</span>
+                  </div>
+                </div>
+                <div class="step-pill" style="background:var(--pale-blue);">
+                  <div>
+                    <p class="step-pill-title">Purchase Order (PO) Created</p>
+                    <ul>
+                      <li><span>Once approved, Epicor generates a PO</span></li>
+                      <li><span>PO is sent to the vendor for fulfilment</span></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Step 4: Ecru -->
+              <div class="step-card">
+                <div class="step-number" style="background:var(--ecru-accent);">
+                  <div class="step-number-inner" style="background:var(--ecru-light);border-color:var(--ecru);">
+                    <span class="step-number-text" style="color:var(--ecru-accent);">4</span>
+                  </div>
+                </div>
+                <div class="step-pill" style="background:var(--ecru-light);">
+                  <div>
+                    <p class="step-pill-title">Goods/Services Receipt</p>
+                    <ul>
+                      <li><span>Requester or receiving team confirms delivery in Epicor</span></li>
+                      <li><span>Receipt entry is essential for matching and must be attached when receipting the PO</span></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Step 5: Lilac -->
+              <div class="step-card">
+                <div class="step-number" style="background:var(--lilac-accent);">
+                  <div class="step-number-inner" style="background:var(--lilac-light);border-color:var(--lilac);">
+                    <span class="step-number-text" style="color:var(--lilac-accent);">5</span>
+                  </div>
+                </div>
+                <div class="step-pill" style="background:var(--lilac-light);">
+                  <div>
+                    <p class="step-pill-title">Invoice Submission</p>
+                    <ul>
+                      <li><span>Vendor send invoice to <a href="mailto:invoices@scrosswa.org.au" style="text-decoration:underline;">invoices@scrosswa.org.au</a></span></li>
+                      <li><span>The invoice's information is extracted via KOFAX and sent to ARM</span></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Step 6: Yellow -->
+              <div class="step-card">
+                <div class="step-number" style="background:var(--yellow-accent);">
+                  <div class="step-number-inner" style="background:var(--yellow-light);border-color:var(--yellow);">
+                    <span class="step-number-text" style="color:var(--yellow-accent);">6</span>
+                  </div>
+                </div>
+                <div class="step-pill" style="background:var(--yellow-light);">
+                  <div>
+                    <p class="step-pill-title">Three-Way Matching</p>
+                    <ul>
+                      <li><span>Epicor ARM uses the PO number to compare the PO, Invoice and goods receipt</span></li>
+                      <li><span>If matched, the invoice is automatically approved for payment.</span></li>
+                      <li><span>If mismatched, the invoice is sent to Drafts for AP to investigate and resolve.</span></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+            </div><!-- /steps-container -->
+          </div><!-- /sub-section PR-to-PO -->
+
+          <!-- ========================================= -->
+          <!-- SECTION 2: Purchase Requisitions (PR)     -->
+          <!-- ========================================= -->
+          <div class="sub-section">
+
+            <div class="sub-header">
+              <div class="sub-header-shape" style="right:-30%;top:-140%;opacity:0.4;"></div>
+              <div class="sub-header-shape" style="right:-40%;top:-135%;opacity:0.15;"></div>
+              <span class="sub-header-title">Purchase Requisitions (PR)</span>
+            </div>
+
+            <p class="section-body">A Purchase Requisition (PR) is the first step in SCCWA's Procure-to-Pay (P2P) process. It is an internal request to purchase goods or services and ensures that all purchases are properly authorized, budgeted, and compliant with SCCWA's financial controls. Once approved, the PR automatically generates a Purchase Order (PO) in Epicor ARM.</p>
+
+            <p class="section-body">This is when a Capital Expenditure cost needs to be identified. For more information regarding Cap Ex please go to: (Link to page)</p>
+
+            <!-- Purpose of PRs -->
+            <p class="section-body-title">Purpose of PRs</p>
+            <div class="purpose-cards">
+              <div class="purpose-card">
+                <div class="purpose-badge" style="background:var(--apricot-accent);">
+                  <div class="purpose-badge-inner" style="background:var(--apricot-light);border-color:var(--apricot-border);">
+                    <span class="purpose-badge-text" style="color:var(--apricot-accent);">1</span>
+                  </div>
+                </div>
+                <div class="purpose-text-box" style="background:var(--apricot-light);opacity:0.8;color:var(--neutral-800);">
+                  Provide financial control and auditability
+                </div>
+              </div>
+              <div class="purpose-card">
+                <div class="purpose-badge" style="background:var(--mint-accent);">
+                  <div class="purpose-badge-inner" style="background:var(--mint-light);border-color:var(--mint);">
+                    <span class="purpose-badge-text" style="color:var(--mint-accent);">2</span>
+                  </div>
+                </div>
+                <div class="purpose-text-box" style="background:var(--mint-light);color:var(--neutral-800);">
+                  Ensure purchases align with budgets and Delegation of Authority
+                </div>
+              </div>
+              <div class="purpose-card">
+                <div class="purpose-badge" style="background:var(--pale-blue-accent);">
+                  <div class="purpose-badge-inner" style="background:var(--pale-blue);border-color:var(--pale-blue-dark);">
+                    <span class="purpose-badge-text" style="color:var(--pale-blue-accent);">3</span>
+                  </div>
+                </div>
+                <div class="purpose-text-box" style="background:var(--neutral-100);color:var(--neutral-800);">
+                  Form the basis for PO creation and subsequent invoice matching
+                </div>
+              </div>
+            </div>
+
+            <!-- AP Considerations -->
+            <p class="section-body-title">AP Considerations</p>
+            <div class="ap-cards-grid">
+              <div class="ap-cards-row">
+                <div class="ap-card">
+                  <div class="ap-badge" style="background:var(--apricot-accent);">
+                    <div class="ap-badge-inner" style="background:var(--apricot-light);border-color:var(--apricot-border);">
+                      <img src="https://www.figma.com/api/mcp/asset/926f65c8-577a-4812-8cdd-83175344023c" alt="">
+                    </div>
+                  </div>
+                  <div class="ap-text-box" style="background:var(--apricot-light);opacity:0.8;">
+                    A PO Number must be present on the PO and Invoice.
+                  </div>
+                </div>
+                <div class="ap-card">
+                  <div class="ap-badge" style="background:var(--mint-accent);">
+                    <div class="ap-badge-inner" style="background:var(--mint-light);border-color:var(--mint);">
+                      <img src="https://www.figma.com/api/mcp/asset/926f65c8-577a-4812-8cdd-83175344023c" alt="">
+                    </div>
+                  </div>
+                  <div class="ap-text-box" style="background:var(--mint-light);">
+                    Details have to be consistent between the PR, PO, GRN/DD and invoice.
+                  </div>
+                </div>
+              </div>
+              <div class="ap-cards-row">
+                <div class="ap-card">
+                  <div class="ap-badge" style="background:var(--pale-blue-accent);">
+                    <div class="ap-badge-inner" style="background:var(--pale-blue);border-color:var(--pale-blue-dark);">
+                      <img src="https://www.figma.com/api/mcp/asset/926f65c8-577a-4812-8cdd-83175344023c" alt="">
+                    </div>
+                  </div>
+                  <div class="ap-text-box" style="background:var(--neutral-100);">
+                    Goods Receipt Note (GRN) or Delivery Docket (DD) must be attached in Epicor for Three-Way Matching.
+                  </div>
+                </div>
+                <div class="ap-card">
+                  <div class="ap-badge" style="background:var(--ecru-accent);">
+                    <div class="ap-badge-inner" style="background:var(--ecru-light);border-color:var(--ecru);">
+                      <img src="https://www.figma.com/api/mcp/asset/23f00e8d-a0f5-4ded-bc63-ee5021e4c0e9" alt="">
+                    </div>
+                  </div>
+                  <div class="ap-text-box" style="background:var(--ecru-light);">
+                    The PO creation triggers Epicor's WIP Staging, please see [Link to page] to learn more.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- PR Process Map -->
+            <p class="section-body-title">PR Process Map</p>
+            <div class="process-map">
+              <img src="https://www.figma.com/api/mcp/asset/544e4de0-7d3f-46b9-896f-9656be98796a" alt="PR Process Map">
+            </div>
+
+            <!-- Creating a PR in ARM: Step-by-Step -->
+            <p class="section-body-title">Creating a PR in ARM: Step-by-Step</p>
+            <div class="process-map">
+              <img src="https://www.figma.com/api/mcp/asset/049b02f6-f535-4925-a01b-374a9c95517c" alt="Creating a PR Screenshot">
+            </div>
+
+            <div class="pr-steps">
+
+              <!-- PR Step 1: Log in to ARM -->
+              <div class="pr-step">
+                <div class="pr-step-header">
+                  <div class="pr-step-badge" style="background:var(--apricot-accent);">
+                    <div class="pr-step-badge-inner" style="background:var(--apricot-light);border-color:var(--apricot-border);">
+                      <span class="purpose-badge-text" style="color:var(--apricot-accent);">1</span>
+                    </div>
+                  </div>
+                  <div class="pr-step-title-box" style="background:var(--apricot-light);">Log in to ARM</div>
+                </div>
+                <div class="pr-step-content">
+                  <p>Access Epicor ARM via SCCWA's intranet quick link titled "Invoice Process".</p>
+                </div>
+              </div>
+
+              <!-- PR Step 2: Navigate -->
+              <div class="pr-step">
+                <div class="pr-step-header">
+                  <div class="pr-step-badge" style="background:var(--mint-accent);">
+                    <div class="pr-step-badge-inner" style="background:var(--mint-light);border-color:var(--mint);">
+                      <span class="purpose-badge-text" style="color:var(--mint-accent);">2</span>
+                    </div>
+                  </div>
+                  <div class="pr-step-title-box" style="background:var(--mint-light);">Navigate to "Requisition Entry"</div>
+                </div>
+                <div class="pr-step-content">
+                  <p>Select New Requisition.</p>
+                </div>
+              </div>
+
+              <!-- PR Step 3: Enter Required Details -->
+              <div class="pr-step">
+                <div class="pr-step-header">
+                  <div class="pr-step-badge" style="background:var(--pale-blue-accent);">
+                    <div class="pr-step-badge-inner" style="background:var(--pale-blue);border-color:var(--pale-blue-dark);">
+                      <span class="purpose-badge-text" style="color:var(--pale-blue-accent);">3</span>
+                    </div>
+                  </div>
+                  <div class="pr-step-title-box" style="background:var(--pale-blue);">Enter Required Details</div>
+                </div>
+                <div class="pr-step-content">
+                  <ul>
+                    <li><strong>Item/Service Description:</strong> Clearly describe what is being purchased.</li>
+                    <li><strong>Quantity & Estimated Cost:</strong> Include accurate figures.</li>
+                    <li><strong>Preferred Supplier:</strong> If known, select from the vendor list.</li>
+                    <li><strong>GL Code & Cost Centre:</strong> Ensure correct coding for financial reporting.</li>
+                    <li><strong>Justification:</strong> Provide a clear reason for the purchase.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- PR Step 4: Attach Supporting Documents -->
+              <div class="pr-step">
+                <div class="pr-step-header">
+                  <div class="pr-step-badge" style="background:var(--ecru-accent);">
+                    <div class="pr-step-badge-inner" style="background:var(--ecru-light);border-color:var(--ecru);">
+                      <span class="purpose-badge-text" style="color:var(--ecru-accent);">4</span>
+                    </div>
+                  </div>
+                  <div class="pr-step-title-box" style="background:var(--ecru-light);">Attach Supporting Documents</div>
+                </div>
+                <div class="pr-step-content">
+                  <ul>
+                    <li>Quotes, specifications, or CapEx forms (if applicable).</li>
+                    <li>Attach files directly in ARM for audit purposes.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- PR Step 5: Submit for Approval -->
+              <div class="pr-step">
+                <div class="pr-step-header">
+                  <div class="pr-step-badge" style="background:var(--lilac-accent);">
+                    <div class="pr-step-badge-inner" style="background:var(--lilac-light);border-color:var(--lilac);">
+                      <span class="purpose-badge-text" style="color:var(--lilac-accent);">5</span>
+                    </div>
+                  </div>
+                  <div class="pr-step-title-box" style="background:var(--lilac-light);">Submit for Approval</div>
+                </div>
+                <div class="pr-step-content">
+                  <p>Click Submit to route the PR through ARM's approval workflow.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- PR Approval Workflow -->
+            <p class="section-body-title">PR Approval Workflow</p>
+            <div class="workflow-info">
+              <div class="workflow-box" style="background:var(--apricot-light);border-left:4px solid var(--apricot-accent);">
+                <p><strong>ARM automatically routes PRs based on:</strong></p>
+                <ul style="padding-left:24px;margin-top:8px;">
+                  <li>Amount thresholds</li>
+                  <li>Cost centre codes</li>
+                  <li>Delegation of Authority (DoA) Matrix</li>
+                </ul>
+              </div>
+              <div class="workflow-box" style="background:var(--mint-light);border-left:4px solid var(--mint-accent);">
+                <p>Approvers receive notifications in ARM or via email.</p>
+              </div>
+              <div class="workflow-box" style="background:var(--pale-blue);border-left:4px solid var(--pale-blue-accent);">
+                <p><strong>Approvers can:</strong></p>
+                <ul style="padding-left:24px;margin-top:8px;">
+                  <li>Approve (PO is generated)</li>
+                  <li>Reject (PR must be edited and resubmitted)</li>
+                  <li>Request Changes</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Troubleshooting & Common Scenarios -->
+            <p class="section-body-title">Troubleshooting & Common Scenarios</p>
+            <div class="troubleshoot-grid">
+
+              <!-- Card 1: PR Rejected -->
+              <div class="troubleshoot-card">
+                <div class="troubleshoot-shadow" style="background:var(--apricot-darker);"></div>
+                <div class="troubleshoot-body" style="background:var(--apricot-border);">
+                  <div class="troubleshoot-inner">
+                    <div class="troubleshoot-num" style="background:var(--apricot-light);">
+                      <span style="color:var(--apricot-darker);">1</span>
+                      <span class="troubleshoot-num-shadow" style="color:var(--apricot);">1</span>
+                    </div>
+                    <div>
+                      <p class="troubleshoot-title">PR Rejected</p>
+                      <div class="troubleshoot-text" style="background:var(--apricot-light);">
+                        Review feedback, edit, and resubmit.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card 2: Missing Vendor -->
+              <div class="troubleshoot-card">
+                <div class="troubleshoot-shadow" style="background:#3a7c65;"></div>
+                <div class="troubleshoot-body" style="background:var(--mint);">
+                  <div class="troubleshoot-inner">
+                    <div class="troubleshoot-num" style="background:var(--mint-light);">
+                      <span style="color:#3a7c65;">2</span>
+                      <span class="troubleshoot-num-shadow" style="color:var(--mint);">2</span>
+                    </div>
+                    <div>
+                      <p class="troubleshoot-title">Missing Vendor</p>
+                      <div class="troubleshoot-text" style="background:var(--mint-light);">
+                        Raise a Procurement Helpdesk ticket for setup.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card 3: Urgent Purchase -->
+              <div class="troubleshoot-card">
+                <div class="troubleshoot-shadow" style="background:var(--pale-blue-accent);"></div>
+                <div class="troubleshoot-body" style="background:var(--pale-blue-dark);">
+                  <div class="troubleshoot-inner">
+                    <div class="troubleshoot-num" style="background:var(--pale-blue);">
+                      <span style="color:var(--pale-blue-accent);">3</span>
+                      <span class="troubleshoot-num-shadow" style="color:var(--pale-blue-dark);">3</span>
+                    </div>
+                    <div>
+                      <p class="troubleshoot-title">Urgent Purchase</p>
+                      <div class="troubleshoot-text" style="background:var(--pale-blue);">
+                        Follow escalation protocol and notify approver.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card 4: CapEx Purchase -->
+              <div class="troubleshoot-card">
+                <div class="troubleshoot-shadow" style="background:var(--ecru-accent);"></div>
+                <div class="troubleshoot-body" style="background:var(--ecru);">
+                  <div class="troubleshoot-inner">
+                    <div class="troubleshoot-num" style="background:var(--ecru-light);">
+                      <span style="color:var(--ecru-accent);">4</span>
+                      <span class="troubleshoot-num-shadow" style="color:var(--ecru);">4</span>
+                    </div>
+                    <div>
+                      <p class="troubleshoot-title">CapEx Purchase</p>
+                      <div class="troubleshoot-text" style="background:var(--ecru-light);">
+                        Ensure CapEx form and approvals are attached.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- PR Quick Reference Checklist -->
+            <p class="section-body-title">PR Quick Reference Checklist</p>
+            <div class="checklist-row">
+              <div class="checklist-item">
+                <div class="checklist-icon" style="background:var(--apricot);">
+                  <img src="https://www.figma.com/api/mcp/asset/90d3b0c6-ecf1-4966-89a1-dbaf846905e1" alt="check">
+                </div>
+                <div class="checklist-text">Item/Service<br>Details Entered</div>
+              </div>
+              <div class="checklist-item">
+                <div class="checklist-icon" style="background:var(--mint);">
+                  <img src="https://www.figma.com/api/mcp/asset/90d3b0c6-ecf1-4966-89a1-dbaf846905e1" alt="check">
+                </div>
+                <div class="checklist-text">GL Code and Cost Centre Correct</div>
+              </div>
+              <div class="checklist-item">
+                <div class="checklist-icon" style="background:var(--pale-blue-dark);">
+                  <img src="https://www.figma.com/api/mcp/asset/90d3b0c6-ecf1-4966-89a1-dbaf846905e1" alt="check">
+                </div>
+                <div class="checklist-text">Supporting Documents Attached</div>
+              </div>
+              <div class="checklist-item">
+                <div class="checklist-icon" style="background:var(--ecru);">
+                  <img src="https://www.figma.com/api/mcp/asset/90d3b0c6-ecf1-4966-89a1-dbaf846905e1" alt="check">
+                </div>
+                <div class="checklist-text">Submitted for Approval</div>
+              </div>
+              <div class="checklist-item">
+                <div class="checklist-icon" style="background:var(--lilac);">
+                  <img src="https://www.figma.com/api/mcp/asset/90d3b0c6-ecf1-4966-89a1-dbaf846905e1" alt="check">
+                </div>
+                <div class="checklist-text">Track Status in<br>ARM</div>
+              </div>
+            </div>
+
+          </div><!-- /sub-section Purchase Requisitions -->
+
+          <!-- ========================================= -->
+          <!-- SECTION 3: Purchase Order (PO)            -->
+          <!-- ========================================= -->
+          <div class="sub-section">
+
+            <div class="sub-header">
+              <div class="sub-header-shape" style="right:-30%;top:-140%;opacity:0.4;"></div>
+              <div class="sub-header-shape" style="right:-40%;top:-135%;opacity:0.15;"></div>
+              <span class="sub-header-title">Purchase Order</span>
+            </div>
+
+            <p class="section-body">Purchase Orders (POs) are the backbone of the procurement and payment process in Epicor Advanced Requisition Management (ARM). They ensure every purchase is authorized, tracked, and matched to receipts and invoices, supporting compliance and efficient operations.</p>
+
+            <!-- What is a Purchase Order? -->
+            <p class="section-body-title">What is a Purchase Order?</p>
+            <div class="gap-16">
+              <p style="color:var(--navy);font-size:16px;line-height:24px;">Definition</p>
+              <p class="section-body">A PO is a formal document generated by ARM after a requisition is approved. It authorizes the purchase of goods or services from a supplier.</p>
+            </div>
+
+            <!-- Purpose -->
+            <p style="color:var(--navy);font-size:16px;line-height:24px;">Purpose</p>
+            <div class="purpose-cards">
+              <div class="purpose-card">
+                <div class="purpose-badge" style="background:var(--apricot-accent);">
+                  <div class="purpose-badge-inner" style="background:var(--apricot-light);border-color:var(--apricot-border);">
+                    <span class="purpose-badge-text" style="color:var(--apricot-accent);">1</span>
+                  </div>
+                </div>
+                <div class="purpose-text-box" style="background:var(--apricot-light);opacity:0.8;color:var(--navy);">
+                  Legal proof of purchase
+                </div>
+              </div>
+              <div class="purpose-card">
+                <div class="purpose-badge" style="background:var(--mint-accent);">
+                  <div class="purpose-badge-inner" style="background:var(--mint-light);border-color:var(--mint);">
+                    <span class="purpose-badge-text" style="color:var(--mint-accent);">2</span>
+                  </div>
+                </div>
+                <div class="purpose-text-box" style="background:var(--mint-light);color:var(--navy);">
+                  Reference for matching invoices and receipts
+                </div>
+              </div>
+              <div class="purpose-card">
+                <div class="purpose-badge" style="background:var(--pale-blue-accent);">
+                  <div class="purpose-badge-inner" style="background:var(--pale-blue);border-color:var(--pale-blue-dark);">
+                    <span class="purpose-badge-text" style="color:var(--pale-blue-accent);">3</span>
+                  </div>
+                </div>
+                <div class="purpose-text-box" style="background:var(--neutral-100);color:var(--navy);">
+                  Ensures budget control and auditability
+                </div>
+              </div>
+            </div>
+
+            <!-- AP considerations for PO -->
+            <p class="section-body-title">AP considerations</p>
+            <div class="ap-cards-grid">
+              <div class="ap-cards-row">
+                <div class="ap-card">
+                  <div class="ap-badge" style="background:var(--apricot-accent);">
+                    <div class="ap-badge-inner" style="background:var(--apricot-light);border-color:var(--apricot-border);">
+                      <img src="https://www.figma.com/api/mcp/asset/926f65c8-577a-4812-8cdd-83175344023c" alt="">
+                    </div>
+                  </div>
+                  <div class="ap-text-box" style="background:var(--apricot-light);opacity:0.8;">
+                    Ensure every invoice references a valid PO number
+                  </div>
+                </div>
+                <div class="ap-card">
+                  <div class="ap-badge" style="background:var(--mint-accent);">
+                    <div class="ap-badge-inner" style="background:var(--mint-light);border-color:var(--mint);">
+                      <img src="https://www.figma.com/api/mcp/asset/926f65c8-577a-4812-8cdd-83175344023c" alt="">
+                    </div>
+                  </div>
+                  <div class="ap-text-box" style="background:var(--mint-light);">
+                    All POs must be receipted in ARM before the invoice can be match.
+                  </div>
+                </div>
+              </div>
+              <div class="ap-cards-row">
+                <div class="ap-card">
+                  <div class="ap-badge" style="background:var(--pale-blue-accent);">
+                    <div class="ap-badge-inner" style="background:var(--pale-blue);border-color:var(--pale-blue-dark);">
+                      <img src="https://www.figma.com/api/mcp/asset/926f65c8-577a-4812-8cdd-83175344023c" alt="">
+                    </div>
+                  </div>
+                  <div class="ap-text-box" style="background:var(--neutral-100);">
+                    For three-way-matching the invoice needs to have all line items recorded (do not roll up)
+                  </div>
+                </div>
+                <div class="ap-card">
+                  <div class="ap-badge" style="background:var(--ecru-accent);">
+                    <div class="ap-badge-inner" style="background:var(--ecru-light);border-color:var(--ecru);">
+                      <img src="https://www.figma.com/api/mcp/asset/23f00e8d-a0f5-4ded-bc63-ee5021e4c0e9" alt="">
+                    </div>
+                  </div>
+                  <div class="ap-text-box" style="background:var(--ecru-light);">
+                    ARM allows for partial matches of invoices to POs
+                  </div>
+                </div>
+              </div>
+              <div class="ap-cards-row">
+                <div class="ap-card">
+                  <div class="ap-badge" style="background:var(--lilac-accent);">
+                    <div class="ap-badge-inner" style="background:var(--lilac-light);border-color:var(--lilac);">
+                      <img src="https://www.figma.com/api/mcp/asset/926f65c8-577a-4812-8cdd-83175344023c" alt="">
+                    </div>
+                  </div>
+                  <div class="ap-text-box" style="background:var(--lilac-light);">
+                    All supporting documents should be attached to the PO and receipt records
+                  </div>
+                </div>
+                <div class="ap-card">
+                  <div class="ap-badge" style="background:var(--yellow-accent);">
+                    <div class="ap-badge-inner" style="background:var(--yellow-light);border-color:var(--yellow);">
+                      <img src="https://www.figma.com/api/mcp/asset/23f00e8d-a0f5-4ded-bc63-ee5021e4c0e9" alt="">
+                    </div>
+                  </div>
+                  <div class="ap-text-box" style="background:var(--yellow-light);">
+                    Investigate and resolve any discrepancies before payment
+                  </div>
+                </div>
+              </div>
+              <div class="ap-cards-row">
+                <div class="ap-card">
+                  <div class="ap-badge" style="background:var(--apricot-accent);">
+                    <div class="ap-badge-inner" style="background:var(--apricot-light);border-color:var(--apricot-border);">
+                      <img src="https://www.figma.com/api/mcp/asset/926f65c8-577a-4812-8cdd-83175344023c" alt="">
+                    </div>
+                  </div>
+                  <div class="ap-text-box" style="background:var(--apricot-light);opacity:0.8;">
+                    Hold invoices for cancelled POs and document exceptions
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Purchase Order Process Map -->
+            <p class="section-body-title">Purchase Order Process Map</p>
+            <div class="process-map">
+              <img src="https://www.figma.com/api/mcp/asset/19ec9924-d1a4-4ae3-a1e5-f141d4d707c3" alt="Purchase Order Process Map">
+            </div>
+
+            <!-- PO Workflow Step-by-Step -->
+            <p class="section-body-title">PO Workflow Step-by-Step</p>
+            <div class="process-map">
+              <img src="https://www.figma.com/api/mcp/asset/819e605e-dd7a-4082-84a9-4b01885586e2" alt="PO Workflow Step-by-Step">
+            </div>
+
+            <!-- PO Practical Tips & Best Practice -->
+            <p class="section-body-title">PO Practical Tips & Best Practice</p>
+            <div class="process-map">
+              <img src="https://www.figma.com/api/mcp/asset/638ba915-a150-4654-8931-d7648484d155" alt="PO Practical Tips">
+            </div>
+
+            <div class="best-practices">
+              <div class="best-practice-item">
+                <div class="ap-badge" style="background:var(--apricot-accent);">
+                  <div class="ap-badge-inner" style="background:var(--apricot-light);border-color:var(--apricot-border);">
+                    <img src="https://www.figma.com/api/mcp/asset/926f65c8-577a-4812-8cdd-83175344023c" alt="">
+                  </div>
+                </div>
+                <div class="ap-text-box" style="background:var(--apricot-light);opacity:0.8;">
+                  Always reference PO number on all supplier invoices
+                </div>
+              </div>
+              <div class="best-practice-item">
+                <div class="ap-badge" style="background:var(--mint-accent);">
+                  <div class="ap-badge-inner" style="background:var(--mint-light);border-color:var(--mint);">
+                    <img src="https://www.figma.com/api/mcp/asset/926f65c8-577a-4812-8cdd-83175344023c" alt="">
+                  </div>
+                </div>
+                <div class="ap-text-box" style="background:var(--mint-light);">
+                  Promptly receipt goods/services in ARM to avoid payment delays
+                </div>
+              </div>
+              <div class="best-practice-item">
+                <div class="ap-badge" style="background:var(--pale-blue-accent);">
+                  <div class="ap-badge-inner" style="background:var(--pale-blue);border-color:var(--pale-blue-dark);">
+                    <img src="https://www.figma.com/api/mcp/asset/926f65c8-577a-4812-8cdd-83175344023c" alt="">
+                  </div>
+                </div>
+                <div class="ap-text-box" style="background:var(--neutral-100);">
+                  Attach all supporting documents to the PO
+                </div>
+              </div>
+              <div class="best-practice-item">
+                <div class="ap-badge" style="background:var(--ecru-accent);">
+                  <div class="ap-badge-inner" style="background:var(--ecru-light);border-color:var(--ecru);">
+                    <img src="https://www.figma.com/api/mcp/asset/23f00e8d-a0f5-4ded-bc63-ee5021e4c0e9" alt="">
+                  </div>
+                </div>
+                <div class="ap-text-box" style="background:var(--ecru-light);">
+                  Use ARM's workflow notifications to track approvals, receipts, and matching status
+                </div>
+              </div>
+              <div class="best-practice-item">
+                <div class="ap-badge" style="background:var(--lilac-accent);">
+                  <div class="ap-badge-inner" style="background:var(--lilac-light);border-color:var(--lilac);">
+                    <img src="https://www.figma.com/api/mcp/asset/926f65c8-577a-4812-8cdd-83175344023c" alt="">
+                  </div>
+                </div>
+                <div class="ap-text-box" style="background:var(--lilac-light);">
+                  Investigate flagged variances before payment - review PO, receipt, and invoice details
+                </div>
+              </div>
+              <div class="best-practice-item">
+                <div class="ap-badge" style="background:var(--yellow-accent);">
+                  <div class="ap-badge-inner" style="background:var(--yellow-light);border-color:var(--yellow);">
+                    <img src="https://www.figma.com/api/mcp/asset/23f00e8d-a0f5-4ded-bc63-ee5021e4c0e9" alt="">
+                  </div>
+                </div>
+                <div class="ap-text-box" style="background:var(--yellow-light);">
+                  Maintain a clean audit trail by using the shared inbox and standard templates
+                </div>
+              </div>
+              <div class="best-practice-item">
+                <div class="ap-badge" style="background:var(--apricot-accent);">
+                  <div class="ap-badge-inner" style="background:var(--apricot-light);border-color:var(--apricot-border);">
+                    <img src="https://www.figma.com/api/mcp/asset/926f65c8-577a-4812-8cdd-83175344023c" alt="">
+                  </div>
+                </div>
+                <div class="ap-text-box" style="background:var(--apricot-light);opacity:0.8;">
+                  Collaborate with Procurement and requesters to resolve exception quickly
+                </div>
+              </div>
+            </div>
+
+            <!-- PO Troubleshooting -->
+            <p class="section-body-title">Troubleshooting & Common Scenarios</p>
+            <div class="troubleshoot-grid">
+              <div class="troubleshoot-card">
+                <div class="troubleshoot-shadow" style="background:var(--apricot-darker);"></div>
+                <div class="troubleshoot-body" style="background:var(--apricot-border);">
+                  <div class="troubleshoot-inner">
+                    <div class="troubleshoot-num" style="background:var(--apricot-light);">
+                      <span style="color:var(--apricot-darker);">1</span>
+                      <span class="troubleshoot-num-shadow" style="color:var(--apricot);">1</span>
+                    </div>
+                    <div>
+                      <p class="troubleshoot-title">PO not receipted</p>
+                      <div class="troubleshoot-text" style="background:var(--apricot-light);">
+                        Follow up with requester; receipt must be entered before payment
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="troubleshoot-card">
+                <div class="troubleshoot-shadow" style="background:#3a7c65;"></div>
+                <div class="troubleshoot-body" style="background:var(--mint);">
+                  <div class="troubleshoot-inner">
+                    <div class="troubleshoot-num" style="background:var(--mint-light);">
+                      <span style="color:#3a7c65;">2</span>
+                      <span class="troubleshoot-num-shadow" style="color:var(--mint);">2</span>
+                    </div>
+                    <div>
+                      <p class="troubleshoot-title">Invoice missing PO number</p>
+                      <div class="troubleshoot-text" style="background:var(--mint-light);">
+                        Contact supplier to resend invoice with PO reference
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="troubleshoot-card">
+                <div class="troubleshoot-shadow" style="background:var(--pale-blue-accent);"></div>
+                <div class="troubleshoot-body" style="background:var(--pale-blue-dark);">
+                  <div class="troubleshoot-inner">
+                    <div class="troubleshoot-num" style="background:var(--pale-blue);">
+                      <span style="color:var(--pale-blue-accent);">3</span>
+                      <span class="troubleshoot-num-shadow" style="color:var(--pale-blue-dark);">3</span>
+                    </div>
+                    <div>
+                      <p class="troubleshoot-title">Quantity/price variance</p>
+                      <div class="troubleshoot-text" style="background:var(--pale-blue);">
+                        Review supporting documents; resolve with requester/supplier
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="troubleshoot-card">
+                <div class="troubleshoot-shadow" style="background:var(--ecru-accent);"></div>
+                <div class="troubleshoot-body" style="background:var(--ecru);">
+                  <div class="troubleshoot-inner">
+                    <div class="troubleshoot-num" style="background:var(--ecru-light);">
+                      <span style="color:var(--ecru-accent);">4</span>
+                      <span class="troubleshoot-num-shadow" style="color:var(--ecru);">4</span>
+                    </div>
+                    <div>
+                      <p class="troubleshoot-title">Partial delivery</p>
+                      <div class="troubleshoot-text" style="background:var(--ecru-light);">
+                        Enter partial receipt in ARM; match invoice accordingly
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Second row of PO troubleshooting -->
+            <div class="troubleshoot-grid" style="margin-top:16px;">
+              <div class="troubleshoot-card">
+                <div class="troubleshoot-shadow" style="background:var(--lilac-accent);"></div>
+                <div class="troubleshoot-body" style="background:var(--lilac);">
+                  <div class="troubleshoot-inner">
+                    <div class="troubleshoot-num" style="background:var(--lilac-light);">
+                      <span style="color:var(--lilac-accent);">5</span>
+                      <span class="troubleshoot-num-shadow" style="color:var(--lilac);">5</span>
+                    </div>
+                    <div>
+                      <p class="troubleshoot-title">Duplicate invoice</p>
+                      <div class="troubleshoot-text" style="background:var(--lilac-light);">
+                        KOFAX flags duplicates; verify and reject if necessary
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="troubleshoot-card">
+                <div class="troubleshoot-shadow" style="background:var(--yellow-accent);"></div>
+                <div class="troubleshoot-body" style="background:var(--yellow);">
+                  <div class="troubleshoot-inner">
+                    <div class="troubleshoot-num" style="background:var(--yellow-light);">
+                      <span style="color:var(--yellow-accent);">6</span>
+                      <span class="troubleshoot-num-shadow" style="color:var(--yellow);">6</span>
+                    </div>
+                    <div>
+                      <p class="troubleshoot-title">PO cancelled</p>
+                      <div class="troubleshoot-text" style="background:var(--yellow-light);">
+                        Ensure cancellation is updated in ARM and communicated to AP
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="troubleshoot-card">
+                <div class="troubleshoot-shadow" style="background:var(--apricot-darker);"></div>
+                <div class="troubleshoot-body" style="background:var(--apricot-border);">
+                  <div class="troubleshoot-inner">
+                    <div class="troubleshoot-num" style="background:var(--apricot-light);">
+                      <span style="color:var(--apricot-darker);">7</span>
+                      <span class="troubleshoot-num-shadow" style="color:var(--apricot);">7</span>
+                    </div>
+                    <div>
+                      <p class="troubleshoot-title">Invoice for cancelled PO</p>
+                      <div class="troubleshoot-text" style="background:var(--apricot-light);">
+                        Put invoice on hold and investigate; run exception report if needed
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- PO Quick Reference Checklist -->
+            <p class="section-body-title">PR Quick Reference Checklist</p>
+            <div class="po-checklist-grid">
+              <div class="po-checklist-row">
+                <div class="po-checklist-item">
+                  <div class="po-checklist-icon" style="background:var(--apricot);">
+                    <img src="https://www.figma.com/api/mcp/asset/90d3b0c6-ecf1-4966-89a1-dbaf846905e1" alt="check" style="width:20px;height:20px;">
+                  </div>
+                  <div class="po-checklist-text">PO generated after PR approval</div>
+                </div>
+                <div class="po-checklist-item">
+                  <div class="po-checklist-icon" style="background:var(--mint);">
+                    <img src="https://www.figma.com/api/mcp/asset/90d3b0c6-ecf1-4966-89a1-dbaf846905e1" alt="check" style="width:20px;height:20px;">
+                  </div>
+                  <div class="po-checklist-text">PO sent to supplier</div>
+                </div>
+                <div class="po-checklist-item">
+                  <div class="po-checklist-icon" style="background:var(--pale-blue-dark);">
+                    <img src="https://www.figma.com/api/mcp/asset/90d3b0c6-ecf1-4966-89a1-dbaf846905e1" alt="check" style="width:20px;height:20px;">
+                  </div>
+                  <div class="po-checklist-text">PO number referenced on invoice</div>
+                </div>
+                <div class="po-checklist-item">
+                  <div class="po-checklist-icon" style="background:var(--ecru);">
+                    <img src="https://www.figma.com/api/mcp/asset/90d3b0c6-ecf1-4966-89a1-dbaf846905e1" alt="check" style="width:20px;height:20px;">
+                  </div>
+                  <div class="po-checklist-text">Goods/services delivered and receipted in ARM</div>
+                </div>
+              </div>
+              <div class="po-checklist-row">
+                <div class="po-checklist-item">
+                  <div class="po-checklist-icon" style="background:var(--lilac);">
+                    <img src="https://www.figma.com/api/mcp/asset/90d3b0c6-ecf1-4966-89a1-dbaf846905e1" alt="check" style="width:20px;height:20px;">
+                  </div>
+                  <div class="po-checklist-text">Supporting documents attached</div>
+                </div>
+                <div class="po-checklist-item">
+                  <div class="po-checklist-icon" style="background:var(--yellow);">
+                    <img src="https://www.figma.com/api/mcp/asset/90d3b0c6-ecf1-4966-89a1-dbaf846905e1" alt="check" style="width:20px;height:20px;">
+                  </div>
+                  <div class="po-checklist-text">Invoice matched to PO and receipt (three-way matching)</div>
+                </div>
+                <div class="po-checklist-item">
+                  <div class="po-checklist-icon" style="background:var(--apricot);">
+                    <img src="https://www.figma.com/api/mcp/asset/90d3b0c6-ecf1-4966-89a1-dbaf846905e1" alt="check" style="width:20px;height:20px;">
+                  </div>
+                  <div class="po-checklist-text">Variances investigated and resolved</div>
+                </div>
+                <div class="po-checklist-item">
+                  <div class="po-checklist-icon" style="background:var(--mint);">
+                    <img src="https://www.figma.com/api/mcp/asset/90d3b0c6-ecf1-4966-89a1-dbaf846905e1" alt="check" style="width:20px;height:20px;">
+                  </div>
+                  <div class="po-checklist-text">Payment processed only after successful matching</div>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /sub-section Purchase Order -->
+
+        </div><!-- /gap-40 -->
+      </div><!-- /section-content -->
+    </main>
+  </div><!-- /main-layout -->
+</div><!-- /page-wrapper -->
+
+</body>
+</html>
