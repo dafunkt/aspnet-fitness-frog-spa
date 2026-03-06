@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Purchasing &amp; Vendor Management — Full Page</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Open+Sans:wght@800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --navy: #003967;
+      --apricot: #e4c197;
+      --apricot-dark: #ddb17b;
+      --mint: #b0d6c9;
+      --mint-dark: #9cccbb;
+      --paleblue: #bbcfec;
+      --paleblue-dark: #95b9ec;
+      --ecru: #cfc9bb;
+      --ecru-dark: #c0b9a7;
+      --lilac: #cab7c4;
+      --lilac-dark: #b8a0b1;
+      --paleyellow: #f1e9a5;
+      --paleyellow-dark: #e5dc8a;
+      --neutral-100: #f5f7f9;
+      --neutral-200: #e6e9ed;
+      --text-dark: #3b3b3b;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #fff;
+      color: var(--navy);
+    }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+      display: flex;
+      align-items: center;
+      height: 80px;
+      width: 100%;
+      max-width: 1728px;
+      margin: 0 auto;
+      background: #fff;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.16);
+      position: relative;
+      z-index: 10;
+      padding: 0 80px;
+    }
+    .navbar-logo { height: 32px; }
+    .navbar-menu {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      margin-left: auto;
+    }
+    .navbar-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--navy);
+      letter-spacing: 0.1px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: inherit;
+      padding: 0 8px;
+      white-space: nowrap;
+    }
+    .navbar-item img { width: 24px; height: 24px; }
+    .navbar-search {
+      width: 40px;
+      height: 40px;
+      border-radius: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 8px;
+    }
+    .navbar-search img { width: 24px; height: 24px; }
+
+    /* ===== TAB BAR ===== */
+    .tab-bar {
+      background: var(--neutral-100);
+      padding: 8px 80px;
+      max-width: 1728px;
+      margin: 0 auto;
+    }
+    .tab-bar-inner {
+      display: flex;
+      gap: 20px;
+      align-items: flex-end;
+    }
+    .tab {
+      padding: 16px 24px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--navy);
+      letter-spacing: 0.1px;
+      white-space: nowrap;
+      border-radius: 0 12px 12px 12px;
+      cursor: pointer;
+    }
+    .tab.active {
+      background: linear-gradient(to bottom, var(--apricot), var(--apricot-dark));
+      border-bottom: 3px solid var(--apricot);
+    }
+    .tab:not(.active) {
+      border: 1.5px solid var(--paleblue-dark);
+    }
+
+    /* ===== MAIN LAYOUT ===== */
+    .main-layout {
+      display: flex;
+      max-width: 1728px;
+      margin: 0 auto;
+      background: var(--neutral-100);
+      min-height: calc(100vh - 80px - 70px);
+    }
+
+    /* ===== SIDEBAR ===== */
+    .sidebar {
+      width: 371px;
+      padding: 24px;
+      flex-shrink: 0;
+      position: sticky;
+      top: 0;
+      align-self: flex-start;
+      max-height: 100vh;
+      overflow-y: auto;
+    }
+    .sidebar-section {
+      border-radius: 8px;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+    .sidebar-section.apricot { background: var(--apricot); }
+    .sidebar-section.mint { background: var(--mint); }
+    .sidebar-section.paleblue { background: var(--paleblue); }
+    .sidebar-section.ecru { background: var(--ecru); }
+    .sidebar-section.lilac { background: var(--lilac); }
+    .sidebar-section.paleyellow { background: var(--paleyellow); }
+
+    .sidebar-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--navy);
+      padding: 12px 16px;
+      letter-spacing: -0.072px;
+      line-height: 20px;
+    }
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--navy);
+      letter-spacing: -0.072px;
+      line-height: 20px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .sidebar-item.sub { padding-left: 40px; padding-top: 8px; padding-bottom: 8px; }
+    .sidebar-section.apricot .sidebar-item { background: #fff2e3; border-bottom: 0.5px solid var(--apricot); }
+    .sidebar-section.apricot .sidebar-item:last-child { border-bottom: 4px solid var(--apricot-dark); border-radius: 0 0 8px 8px; }
+    .sidebar-section.mint .sidebar-item { background: #edfff9; border-bottom: 0.5px solid var(--mint); }
+    .sidebar-section.mint .sidebar-item:last-child { border-bottom: 4px solid var(--mint-dark); border-radius: 0 0 8px 8px; }
+    .sidebar-section.paleblue .sidebar-item { background: #eaf3ff; border-bottom: 0.5px solid var(--paleblue); }
+    .sidebar-section.paleblue .sidebar-item:last-child { border-bottom: 4px solid var(--paleblue-dark); border-radius: 0 0 8px 8px; }
+    .sidebar-section.ecru .sidebar-item { background: #f4edde; border-bottom: 0.5px solid var(--ecru); }
+    .sidebar-section.ecru .sidebar-item:last-child { border-bottom: 4px solid var(--ecru-dark); border-radius: 0 0 8px 8px; }
+    .sidebar-section.lilac .sidebar-item { background: #f3e7ef; border-bottom: 0.5px solid var(--lilac); }
+    .sidebar-section.lilac .sidebar-item:last-child { border-bottom: 4px solid var(--lilac-dark); border-radius: 0 0 8px 8px; }
+    .sidebar-section.paleyellow .sidebar-item { background: #fffdf0; border-bottom: 0.5px solid var(--paleyellow); }
+    .sidebar-section.paleyellow .sidebar-item:last-child { border-bottom: 4px solid var(--paleyellow-dark); border-radius: 0 0 8px 8px; }
+
+    .sidebar-chevron { width: 16px; height: 16px; flex-shrink: 0; }
+
+    /* ===== CONTENT ===== */
+    .content {
+      flex: 1;
+      background: #fff;
+      padding: 12px 16px;
+    }
+    .content-title {
+      font-size: 40px;
+      font-weight: 400;
+      color: var(--navy);
+      line-height: 60px;
+      margin-bottom: 48px;
+    }
+
+    /* Section Header */
+    .section-header {
+      background: var(--navy);
+      border: 1px solid #fff;
+      border-radius: 0 12px 12px 12px;
+      padding: 32px 40px 32px 55px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 48px;
+    }
+    .section-header-circle {
+      position: absolute;
+      right: -200px;
+      top: -113px;
+      width: 790px;
+      height: 790px;
+      opacity: 0.1;
+    }
+    .section-header-icon { width: 47px; height: 48px; position: relative; z-index: 1; }
+    .section-header-title {
+      font-size: 24px;
+      font-weight: 600;
+      color: #fff;
+      line-height: 36px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Sub-section Header */
+    .sub-section-header {
+      background: #fff9f1;
+      border-radius: 0;
+      height: 108px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .sub-section-header.mint-bg { background: #edfff9; }
+    .sub-section-header.blue-bg { background: #eaf3ff; }
+    .sub-section-header.ecru-bg { background: #f4edde; }
+    .sub-section-header.lilac-bg { background: #f3e7ef; }
+    .sub-section-header.yellow-bg { background: #fffdf0; }
+    .sub-section-header h3 {
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--navy);
+      line-height: 30px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Content sections */
+    .content-section {
+      border-bottom: 1px solid var(--neutral-200);
+      padding-bottom: 40px;
+      margin-bottom: 40px;
+    }
+
+    /* Section dividers by theme */
+    .major-section { margin-bottom: 60px; }
+    .major-section:last-child { margin-bottom: 0; }
+
+    .body-text {
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--text-dark);
+      line-height: 24px;
+      margin-bottom: 16px;
+    }
+    .body-text a {
+      color: var(--navy);
+      font-weight: 600;
+      text-decoration: underline;
+    }
+
+    .content-image {
+      width: 100%;
+      border-radius: 4px;
+      margin-bottom: 16px;
+    }
+
+    .section-subtitle {
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--navy);
+      line-height: 20px;
+      letter-spacing: -0.108px;
+      margin-bottom: 16px;
+    }
+    .section-label {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--navy);
+      line-height: 24px;
+      margin-bottom: 16px;
+    }
+
+    /* TBC Label */
+    .tbc-label {
+      font-size: 16px;
+      font-weight: 700;
+      color: #c0392b;
+      margin-top: 8px;
+    }
+
+    /* Numbered Cards (small) */
+    .numbered-cards {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 16px 0;
+    }
+    .numbered-card {
+      width: 207px;
+      position: relative;
+    }
+    .numbered-card-shadow {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      right: -4px;
+      bottom: -3px;
+      background: var(--neutral-200);
+      border-radius: 0 8px 8px 8px;
+    }
+    .numbered-card-body {
+      position: relative;
+      background: #fff;
+      border-radius: 0 8px 8px 8px;
+      padding: 6px 16px;
+      z-index: 1;
+    }
+    .numbered-card-inner {
+      padding: 8px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .number-badge {
+      width: 38px;
+      padding: 8px;
+      border-radius: 0 4px 4px 4px;
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 800;
+      font-size: 24px;
+      line-height: 24px;
+      position: relative;
+    }
+    .number-badge .bg-num {
+      position: absolute;
+      left: 10px;
+      top: 6px;
+      opacity: 0.4;
+    }
+    .number-badge .fg-num { position: relative; z-index: 1; }
+    .number-badge.apricot { background: #fff9f2; }
+    .number-badge.apricot .fg-num { color: #ae7b3b; }
+    .number-badge.apricot .bg-num { color: var(--apricot); }
+    .number-badge.mint { background: #e5fff6; }
+    .number-badge.mint .fg-num { color: #3a7c65; }
+    .number-badge.mint .bg-num { color: var(--mint); }
+    .number-badge.blue { background: #eaf3ff; }
+    .number-badge.blue .fg-num { color: #466086; }
+    .number-badge.blue .bg-num { color: var(--paleblue); }
+    .number-badge.ecru { background: #f9f6f0; }
+    .number-badge.ecru .fg-num { color: #a28f63; }
+    .number-badge.ecru .bg-num { color: var(--ecru); }
+    .number-badge.lilac { background: #f4e5ef; }
+    .number-badge.lilac .fg-num { color: #6b355a; }
+    .number-badge.lilac .bg-num { color: var(--lilac); }
+
+    .numbered-card-text {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--navy);
+      line-height: 21px;
+    }
+
+    /* Step Cards */
+    .step-cards-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+    .step-card {
+      flex: 1;
+      background: #fff;
+      border: 1px solid;
+      border-radius: 0 12px 12px 12px;
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .step-card.apricot { border-color: var(--apricot); }
+    .step-card.mint { border-color: var(--mint); }
+    .step-card.blue { border-color: var(--paleblue); }
+    .step-card.ecru { border-color: var(--ecru); }
+    .step-card.lilac { border-color: var(--lilac); }
+    .step-card.yellow { border-color: var(--paleyellow); }
+
+    .step-card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-radius: 0 8px 8px 8px;
+      padding: 0;
+    }
+    .step-card.apricot .step-card-header { background: #efdec9; }
+    .step-card.mint .step-card-header { background: #defaf0; }
+    .step-card.blue .step-card-header { background: #eaf3ff; }
+    .step-card.ecru .step-card-header { background: #f4f0e9; }
+    .step-card.lilac .step-card-header { background: #f4e5ef; }
+    .step-card.yellow .step-card-header { background: #fffdef; }
+
+    .step-card-icon {
+      border-radius: 0 4px 4px 4px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .step-card.apricot .step-card-icon { background: var(--apricot-dark); }
+    .step-card.mint .step-card-icon { background: var(--mint); }
+    .step-card.blue .step-card-icon { background: var(--paleblue); }
+    .step-card.ecru .step-card-icon { background: var(--ecru); }
+    .step-card.lilac .step-card-icon { background: var(--lilac); }
+    .step-card.yellow .step-card-icon { background: var(--paleyellow); }
+
+    .step-card-icon img { width: 40px; height: 40px; }
+    .step-card-label {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--navy);
+      line-height: 24px;
+    }
+    .step-card-text {
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--navy);
+      line-height: 24px;
+    }
+    .step-card-text a {
+      color: var(--navy);
+      text-decoration: underline;
+    }
+
+    /* Scenario Cards */
+    .scenario-cards {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .scenario-card {
+      width: 263px;
+      position: relative;
+      min-height: 275px;
+    }
+    .scenario-card-shadow {
+      position: absolute;
+      top: 14px;
+      left: 10px;
+      right: -5px;
+      bottom: -12px;
+      border-radius: 0 8px 8px 8px;
+    }
+    .scenario-card-body {
+      position: relative;
+      z-index: 1;
+      border-radius: 0 8px 8px 8px;
+      padding: 6px 16px;
+    }
+    .scenario-card-inner {
+      padding: 8px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .scenario-card-content {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .scenario-card-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--navy);
+      line-height: 24px;
+    }
+    .scenario-card-desc {
+      background: rgba(255,255,255,0.3);
+      border-radius: 4px;
+      padding: 8px;
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--navy);
+      line-height: 24px;
+    }
+
+    /* Best Practices check items */
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--text-dark);
+      line-height: 24px;
+    }
+    .check-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #e8f5e9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: #2e7d32;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    /* Info Cards (Vendor Communications) */
+    .info-cards {
+      display: flex;
+      gap: 24px;
+      margin-top: 24px;
+    }
+    .info-card {
+      flex: 1;
+      background: #fff;
+      border: 1px solid var(--neutral-200);
+      border-radius: 0 12px 12px 12px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .info-card-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .info-card-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--navy);
+      line-height: 24px;
+    }
+    .info-card-body {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--text-dark);
+      line-height: 22px;
+    }
+    .info-card-body a {
+      color: var(--navy);
+      font-weight: 600;
+      text-decoration: underline;
+    }
+    .info-card-body ul {
+      padding-left: 20px;
+      margin-top: 8px;
+    }
+    .info-card-body ul li { margin-bottom: 6px; }
+    .info-card-body p { margin-bottom: 10px; }
+    .info-card-body strong { font-weight: 600; }
+
+    /* Process Flow Images */
+    .process-images {
+      display: flex;
+      gap: 12px;
+      margin: 32px 0;
+      overflow-x: auto;
+    }
+    .process-image {
+      border-radius: 8px;
+      border: 1px solid var(--neutral-200);
+      height: 160px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .flex-row-stretch { display: flex; gap: 16px; }
+    .flex-row-stretch .step-card { flex: 1; width: auto; }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <img src="https://www.figma.com/api/mcp/asset/a976dcaf-4293-4f3a-83c1-d5a7ed2345fa" alt="Logo" class="navbar-logo">
+    <div class="navbar-menu">
+      <button class="navbar-item">AP Team <img src="https://www.figma.com/api/mcp/asset/5a107cb2-fe82-4c5b-a831-5e22b7962e82" alt=""></button>
+      <button class="navbar-item">AP Processes <img src="https://www.figma.com/api/mcp/asset/0d2d27a4-e7d8-427c-88bc-e98ee6b351f0" alt=""></button>
+      <button class="navbar-item">Resources &amp; Support <img src="https://www.figma.com/api/mcp/asset/0d2d27a4-e7d8-427c-88bc-e98ee6b351f0" alt=""></button>
+      <button class="navbar-item">Approvers <img src="https://www.figma.com/api/mcp/asset/0d2d27a4-e7d8-427c-88bc-e98ee6b351f0" alt=""></button>
+      <span class="navbar-item">Chart of Accounts</span>
+      <span class="navbar-item">KOFAX</span>
+      <span class="navbar-item">Epicor ARM</span>
+      <button class="navbar-search"><img src="https://www.figma.com/api/mcp/asset/b9d52227-94eb-46cb-8122-b0172beaa78a" alt="Search"></button>
+    </div>
+  </nav>
+
+  <!-- TAB BAR -->
+  <div class="tab-bar">
+    <div class="tab-bar-inner">
+      <div class="tab active">Purchasing &amp; Vendor Management</div>
+      <div class="tab">Invoice Processing</div>
+      <div class="tab">Payments</div>
+      <div class="tab">Reconciliations &amp; Reporting</div>
+    </div>
+  </div>
+
+  <!-- MAIN LAYOUT -->
+  <div class="main-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <!-- Introduction -->
+      <div class="sidebar-section apricot">
+        <div class="sidebar-title">Introduction</div>
+        <div class="sidebar-item"><img class="sidebar-chevron" src="https://www.figma.com/api/mcp/asset/2e6fae76-75d9-4aba-97a7-1712434a0bc3" alt="">Purchasing &amp; Vendor Management</div>
+        <div class="sidebar-item"><img class="sidebar-chevron" src="https://www.figma.com/api/mcp/asset/2e6fae76-75d9-4aba-97a7-1712434a0bc3" alt="">What Finance Needs to Know</div>
+        <div class="sidebar-item sub"><img class="sidebar-chevron" src="https://www.figma.com/api/mcp/asset/2e6fae76-75d9-4aba-97a7-1712434a0bc3" alt="">How Purchasing Works at SCCWA?</div>
+        <div class="sidebar-item sub"><img class="sidebar-chevron" src="https://www.figma.com/api/mcp/asset/2e6fae76-75d9-4aba-97a7-1712434a0bc3" alt="">Finance &amp; AP Responsibilities</div>
+        <div class="sidebar-item sub"><img class="sidebar-chevron" src="https://www.figma.com/api/mcp/asset/2e6fae76-75d9-4aba-97a7-1712434a0bc3" alt="">Common Scenarios &amp; AP Actions</div>
+        <div class="sidebar-item sub"><img class="sidebar-chevron" src="https://www.figma.com/api/mcp/asset/2e6fae76-75d9-4aba-97a7-1712434a0bc3" alt="">Best Practices for Finance Operations</div>
+      </div>
+
+      <!-- Vendor Management -->
+      <div class="sidebar-section mint">
+        <div class="sidebar-title">Vendor Management</div>
+        <div class="sidebar-item"><img class="sidebar-chevron" src="https://www.figma.com/api/mcp/asset/2e6fae76-75d9-4aba-97a7-1712434a0bc3" alt="">Vendor Onboarding</div>
+        <div class="sidebar-item"><img class="sidebar-chevron" src="https://www.figma.com/api/mcp/asset/2e6fae76-75d9-4aba-97a7-1712434a0bc3" alt="">Vendor Detail Changes</div>
+        <div class="sidebar-item"><img class="sidebar-chevron" src="https://www.figma.com/api/mcp/asset/2e6fae76-75d9-4aba-97a7-1712434a0bc3" alt="">Vendor Communications</div>
+      </div>
+
+      <!-- Purchase-to-Pay -->
+      <div class="sidebar-section paleblue">
+        <div class="sidebar-title">Purchase-to-Pay</div>
+        <div class="sidebar-item"><img class="sidebar-chevron" src="https://www.figma.com/api/mcp/asset/2e6fae76-75d9-4aba-97a7-1712434a0bc3" alt="">PR-to-PO-to-Three-Way Matching</div>
+        <div class="sidebar-item"><img class="sidebar-chevron" src="https://www.figma.com/api/mcp/asset/2e6fae76-75d9-4aba-97a7-1712434a0bc3" alt="">Purchase Requisitions (PR)</div>
+        <div class="sidebar-item"><img class="sidebar-chevron" src="https://www.figma.com/api/mcp/asset/2e6fae76-75d9-4aba-97a7-1712434a0bc3" alt="">Purchase Order (PO)</div>
+        <div class="sidebar-item"><img class="sidebar-chevron" src="https://www.figma.com/api/mcp/asset/2e6fae76-75d9-4aba-97a7-1712434a0bc3" alt="">Receipting a PO</div>
+        <div class="sidebar-item"><img class="sidebar-chevron" src="https://www.figma.com/api/mcp/asset/2e6fae76-75d9-4aba-97a7-1712434a0bc3" alt="">Purchasing Variances</div>
+        <div class="sidebar-item sub"><img class="sidebar-chevron" src="https://www.figma.com/api/mcp/asset/2e6fae76-75d9-4aba-97a7-1712434a0bc3" alt="">Punch Out</div>
+        <div class="sidebar-item sub"><img class="sidebar-chevron" src="https://www.figma.com/api/mcp/asset/2e6fae76-75d9-4aba-97a7-1712434a0bc3" alt="">Sandwai</div>
+        <div class="sidebar-item sub"><img class="sidebar-chevron" src="https://www.figma.com/api/mcp/asset/2e6fae76-75d9-4aba-97a7-1712434a0bc3" alt="">FMI Work Orders</div>
+      </div>
+
+      <!-- Capital Expenditure -->
+      <div class="sidebar-section ecru">
+        <div class="sidebar-title">Capital Expenditure</div>
+        <div class="sidebar-item"><img class="sidebar-chevron" src="https://www.figma.com/api/mcp/asset/2e6fae76-75d9-4aba-97a7-1712434a0bc3" alt="">What is CapEx?</div>
+        <div class="sidebar-item"><img class="sidebar-chevron" src="https://www.figma.com/api/mcp/asset/2e6fae76-75d9-4aba-97a7-1712434a0bc3" alt="">Standard Capital Expenditure Process</div>
+        <div class="sidebar-item"><img class="sidebar-chevron" src="https://www.figma.com/api/mcp/asset/2e6fae76-75d9-4aba-97a7-1712434a0bc3" alt="">Asset &amp; Infrastructure Capital Expenditure Process</div>
+      </div>
+
+      <!-- WIP Staging & GRNI -->
+      <div class="sidebar-section lilac">
+        <div class="sidebar-title">WIP Staging &amp; GRNI</div>
+        <div class="sidebar-item"><img class="sidebar-chevron" src="https://www.figma.com/api/mcp/asset/2e6fae76-75d9-4aba-97a7-1712434a0bc3" alt="">WIP Staging &amp; GRNI Process</div>
+        <div class="sidebar-item"><img class="sidebar-chevron" src="https://www.figma.com/api/mcp/asset/2e6fae76-75d9-4aba-97a7-1712434a0bc3" alt="">WIP Staging</div>
+        <div class="sidebar-item"><img class="sidebar-chevron" src="https://www.figma.com/api/mcp/asset/2e6fae76-75d9-4aba-97a7-1712434a0bc3" alt="">GRNI</div>
+      </div>
+
+      <!-- Cost WIP Capture -->
+      <div class="sidebar-section paleyellow">
+        <div class="sidebar-title">Cost WIP Capture</div>
+      </div>
+    </aside>
+
+    <!-- CONTENT -->
+    <main class="content">
+      <h1 class="content-title">Purchasing &amp; Vendor Management</h1>
+
+      <!-- ============================================================ -->
+      <!-- SECTION 1: INTRODUCTION (apricot theme)                      -->
+      <!-- ============================================================ -->
+      <div class="major-section">
+        <div class="section-header">
+          <img src="https://www.figma.com/api/mcp/asset/309cb67f-7e96-41e1-b12a-9103622ba27a" alt="" class="section-header-icon">
+          <h2 class="section-header-title">Introduction</h2>
+          <img src="https://www.figma.com/api/mcp/asset/65e69146-844c-4905-95b8-f61c17985d03" alt="" class="section-header-circle">
+        </div>
+
+        <!-- Purchasing & Vendor Management -->
+        <div class="content-section">
+          <div class="sub-section-header">
+            <h3>Purchasing &amp; Vendor Management</h3>
+          </div>
+          <p class="body-text">This section outlines how SCCWA manages purchasing and vendor relationships, from raising a purchase requisition to setting up new suppliers and ensuring compliance with internal controls.</p>
+          <img src="https://www.figma.com/api/mcp/asset/4beca26d-eabc-49ab-8833-5a9836addc89" alt="Purchasing process overview" class="content-image">
+          <p class="body-text">This will provide a high-level overview of purchasing activities as they relate to Accounts Payable. For a comprehensive guide to Southern Cross Care WA's Procure-to-Pay (P2P) process — including sourcing, vendor onboarding, contract management, and purchasing workflows.</p>
+          <p class="body-text">Please visit the <a href="https://southerncrosscarewa.sharepoint.com/sites/Procurement/SitePages/Procurement-Process.aspx">Procurement Process site</a>.</p>
+          <p class="section-label">The Procurement site includes:</p>
+          <div class="numbered-cards">
+            <div class="numbered-card">
+              <div class="numbered-card-shadow"></div>
+              <div class="numbered-card-body"><div class="numbered-card-inner">
+                <div class="number-badge apricot"><span class="bg-num">1</span><span class="fg-num">1</span></div>
+                <p class="numbered-card-text">How to source goods and services from the open market or approved vendors</p>
+              </div></div>
+            </div>
+            <div class="numbered-card">
+              <div class="numbered-card-shadow"></div>
+              <div class="numbered-card-body"><div class="numbered-card-inner">
+                <div class="number-badge mint"><span class="bg-num">2</span><span class="fg-num">2</span></div>
+                <p class="numbered-card-text">How to raise a requisition in Epicor ARM</p>
+              </div></div>
+            </div>
+            <div class="numbered-card">
+              <div class="numbered-card-shadow"></div>
+              <div class="numbered-card-body"><div class="numbered-card-inner">
+                <div class="number-badge blue"><span class="bg-num">3</span><span class="fg-num">3</span></div>
+                <p class="numbered-card-text">Contract review procedures</p>
+              </div></div>
+            </div>
+            <div class="numbered-card">
+              <div class="numbered-card-shadow"></div>
+              <div class="numbered-card-body"><div class="numbered-card-inner">
+                <div class="number-badge ecru"><span class="bg-num">4</span><span class="fg-num">4</span></div>
+                <p class="numbered-card-text">Links to submit sourcing or procurement tickets</p>
+              </div></div>
+            </div>
+            <div class="numbered-card">
+              <div class="numbered-card-shadow"></div>
+              <div class="numbered-card-body"><div class="numbered-card-inner">
+                <div class="number-badge lilac"><span class="bg-num">5</span><span class="fg-num">5</span></div>
+                <p class="numbered-card-text">Best practice guidance for purchasing within SCCWA's regulatory framework</p>
+              </div></div>
+            </div>
+          </div>
+          <p class="body-text">For detailed procurement support, always refer to the Procurement team and resources available on the intranet.</p>
+        </div>
+
+        <!-- What Finance Needs to Know -->
+        <div class="content-section">
+          <div class="sub-section-header">
+            <h3>What Finance Needs to Know</h3>
+          </div>
+          <h4 class="section-subtitle">How Purchasing Works at SCCWA?</h4>
+          <p class="body-text">Purchasing is the first step in the Procure-to-Pay (P2P) process and directly impacts how invoices are processed, matched, and paid. While Procurement manages sourcing and vendor setup, Finance and AP ensure purchases are correctly coded, approved, receipted, and reconciled.</p>
+          <p class="body-text">This guide outlines what AP needs to know to support purchasing activities effectively.</p>
+
+          <p class="section-label">Finance &amp; AP Responsibilities</p>
+          <div class="step-cards-row">
+            <div class="step-card apricot">
+              <div class="step-card-header">
+                <div class="step-card-icon"><img src="https://www.figma.com/api/mcp/asset/bff5fe75-b4e0-45b8-9c17-064f520e6da9" alt=""></div>
+                <span class="step-card-label">Vendor Setup</span>
+              </div>
+              <p class="step-card-text">Confirm vendor is active in Epicor/KOFAX. If not, raise a ticket via the Procurement Helpdesk.</p>
+            </div>
+            <div class="step-card mint">
+              <div class="step-card-header">
+                <div class="step-card-icon"><img src="https://www.figma.com/api/mcp/asset/bff5fe75-b4e0-45b8-9c17-064f520e6da9" alt=""></div>
+                <span class="step-card-label">PR Raised</span>
+              </div>
+              <p class="step-card-text">Ensure PR includes correct GL code, cost centre, and justification.<br>Validate CapEx if applicable.</p>
+            </div>
+            <div class="step-card blue">
+              <div class="step-card-header">
+                <div class="step-card-icon"><img src="https://www.figma.com/api/mcp/asset/bff5fe75-b4e0-45b8-9c17-064f520e6da9" alt=""></div>
+                <span class="step-card-label">PR Approved</span>
+              </div>
+              <p class="step-card-text">Approvals follow SCCWA's Delegation of Authority (DoA) Matrix. AP may need to verify approval paths.</p>
+            </div>
+          </div>
+          <div class="step-cards-row">
+            <div class="step-card ecru">
+              <div class="step-card-header">
+                <div class="step-card-icon"><img src="https://www.figma.com/api/mcp/asset/bff5fe75-b4e0-45b8-9c17-064f520e6da9" alt=""></div>
+                <span class="step-card-label">PO Created</span>
+              </div>
+              <p class="step-card-text">PO must match PR details and vendor info. PO number must appear on the invoice.</p>
+            </div>
+            <div class="step-card lilac">
+              <div class="step-card-header">
+                <div class="step-card-icon"><img src="https://www.figma.com/api/mcp/asset/bff5fe75-b4e0-45b8-9c17-064f520e6da9" alt=""></div>
+                <span class="step-card-label">Goods/Services Received</span>
+              </div>
+              <p class="step-card-text">Receipting must be completed in Epicor. Missing receipts delay matching and payment.</p>
+            </div>
+            <div class="step-card yellow">
+              <div class="step-card-header">
+                <div class="step-card-icon"><img src="https://www.figma.com/api/mcp/asset/bff5fe75-b4e0-45b8-9c17-064f520e6da9" alt=""></div>
+                <span class="step-card-label">Invoice Received</span>
+              </div>
+              <p class="step-card-text">Invoices must be sent to <a href="mailto:invoices@scrosswa.org.au">invoices@scrosswa.org.au</a> as PDFs. AP validates invoice details against PO and receipt.</p>
+            </div>
+          </div>
+          <div class="flex-row-stretch">
+            <div class="step-card apricot">
+              <div class="step-card-header">
+                <div class="step-card-icon"><img src="https://www.figma.com/api/mcp/asset/bff5fe75-b4e0-45b8-9c17-064f520e6da9" alt=""></div>
+                <span class="step-card-label">Three-Way Matching</span>
+              </div>
+              <p class="step-card-text">Epicor ARM matches PO, invoice, and receipt. Mismatches are flagged for AP to investigate.</p>
+            </div>
+            <div class="step-card mint">
+              <div class="step-card-header">
+                <div class="step-card-icon"><img src="https://www.figma.com/api/mcp/asset/bff5fe75-b4e0-45b8-9c17-064f520e6da9" alt=""></div>
+                <span class="step-card-label">Payment Processed</span>
+              </div>
+              <p class="step-card-text">AP confirms payment method (e.g., NAB Connect, Corporate Card) and ensures audit trail is complete.</p>
+            </div>
+          </div>
+
+          <p class="section-label" style="margin-top: 40px;">Common Scenarios &amp; AP Actions</p>
+          <div class="scenario-cards">
+            <div class="scenario-card">
+              <div class="scenario-card-shadow" style="background: #ae7b3b;"></div>
+              <div class="scenario-card-body" style="background: #f5d3aa;">
+                <div class="scenario-card-inner">
+                  <div class="number-badge apricot"><span class="bg-num">1</span><span class="fg-num">1</span></div>
+                  <div class="scenario-card-content">
+                    <p class="scenario-card-title">Invoice Received before vendor setup</p>
+                    <div class="scenario-card-desc" style="background: #fff9f1;">Raise a vendor setup ticket via Procurement Helpdesk and hold invoice until setup is complete.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="scenario-card">
+              <div class="scenario-card-shadow" style="background: #3a7c65;"></div>
+              <div class="scenario-card-body" style="background: var(--mint);">
+                <div class="scenario-card-inner">
+                  <div class="number-badge mint"><span class="bg-num">2</span><span class="fg-num">2</span></div>
+                  <div class="scenario-card-content">
+                    <p class="scenario-card-title">Missing PO or GRN</p>
+                    <div class="scenario-card-desc" style="background: #e5fff6;">Contact the requestor to confirm receipt or raise a retrospective PO if applicable.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="scenario-card">
+              <div class="scenario-card-shadow" style="background: #466086;"></div>
+              <div class="scenario-card-body" style="background: #d6e3f7;">
+                <div class="scenario-card-inner">
+                  <div class="number-badge blue"><span class="bg-num">3</span><span class="fg-num">3</span></div>
+                  <div class="scenario-card-content">
+                    <p class="scenario-card-title">Price variance between PO and Invoice</p>
+                    <div class="scenario-card-desc" style="background: #eaf3ff;">Flag the mismatch, obtain approval for variance, and update records accordingly.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="scenario-card">
+              <div class="scenario-card-shadow" style="background: #a28f63;"></div>
+              <div class="scenario-card-body" style="background: #ece5d1;">
+                <div class="scenario-card-inner">
+                  <div class="number-badge ecru"><span class="bg-num">4</span><span class="fg-num">4</span></div>
+                  <div class="scenario-card-content">
+                    <p class="scenario-card-title">Duplicate invoice detected</p>
+                    <div class="scenario-card-desc" style="background: #f9f6f0;">Verify against existing records. If confirmed duplicate, reject and notify vendor.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p class="section-label" style="margin-top: 40px;">Best Practices for Finance Operations</p>
+          <div class="check-item"><span class="check-icon">&#10003;</span> Always verify vendor status before processing any invoice</div>
+          <div class="check-item"><span class="check-icon">&#10003;</span> Ensure all purchases have proper authorisation per DoA Matrix</div>
+          <div class="check-item"><span class="check-icon">&#10003;</span> Flag any discrepancies between PO, receipt, and invoice immediately</div>
+          <div class="check-item"><span class="check-icon">&#10003;</span> Maintain complete audit trails for all purchasing transactions</div>
+          <div class="check-item"><span class="check-icon">&#10003;</span> Use standardised templates and processes for all vendor communications</div>
+        </div>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- SECTION 2: VENDOR MANAGEMENT (mint theme)                    -->
+      <!-- ============================================================ -->
+      <div class="major-section">
+        <div class="section-header">
+          <img src="https://www.figma.com/api/mcp/asset/309cb67f-7e96-41e1-b12a-9103622ba27a" alt="" class="section-header-icon">
+          <h2 class="section-header-title">Vendor Management</h2>
+          <img src="https://www.figma.com/api/mcp/asset/65e69146-844c-4905-95b8-f61c17985d03" alt="" class="section-header-circle">
+        </div>
+
+        <!-- Vendor Onboarding -->
+        <div class="content-section">
+          <div class="sub-section-header mint-bg">
+            <h3>Vendor Onboarding</h3>
+          </div>
+          <p class="body-text">Best purchasing practice in SCCWA's purchase to pay framework involves onboarding a vendor before any purchase is initiated. Most of the goods and services that SCCWA requires for operations and administration can be purchased from established vendors.</p>
+          <p class="body-text">Staff are expected to use the Check Vendor Status tool on the procurement site before making any purchase. If they wish to use a vendor not setup and active in the system they will submit a Sourcing Ticket with procurement. The procurement team will then initiate the sourcing process and complete the Vendor Setup once a contract is agreed upon.</p>
+          <p class="section-subtitle">Vendor Not Setup Before Invoice Received</p>
+          <p class="body-text">This process is if an invoice is received before a vendor is setup in the system.</p>
+          <div class="step-cards-row">
+            <div class="step-card apricot">
+              <div class="step-card-header">
+                <div class="step-card-icon"><img src="https://www.figma.com/api/mcp/asset/bff5fe75-b4e0-45b8-9c17-064f520e6da9" alt=""></div>
+                <span class="step-card-label">Invoice Received before vendor setup</span>
+              </div>
+              <p class="step-card-text">An invoice received without a vendor setup will be flagged for verification in KOFAX or sent to Drafts in Epicor.<br><br>An AP officer will review the invoice error and download a PDF version of the invoice.</p>
+            </div>
+            <div class="step-card mint">
+              <div class="step-card-header">
+                <div class="step-card-icon"><img src="https://www.figma.com/api/mcp/asset/bff5fe75-b4e0-45b8-9c17-064f520e6da9" alt=""></div>
+                <span class="step-card-label">Raise a Procurement Ticket</span>
+              </div>
+              <p class="step-card-text">Go to the Procurement Helpdesk (Support → Procurement Helpdesk) and select 'Setup a New Vendor'.<br><br>Once the form is loaded fill in the relevant details, upload the invoice copy and submit the form.<br><br>An AP officer will review the invoice error and download a PDF version of the invoice.</p>
+            </div>
+            <div class="step-card blue">
+              <div class="step-card-header">
+                <div class="step-card-icon"><img src="https://www.figma.com/api/mcp/asset/bff5fe75-b4e0-45b8-9c17-064f520e6da9" alt=""></div>
+                <span class="step-card-label">Procurement Complete Vendor Setup</span>
+              </div>
+              <p class="step-card-text">A procurement officer will set the vendor up in KOFAX and Epicor.<br><br>The AP officer who raised the ticket will be notified once the setup is complete.</p>
+            </div>
+            <div class="step-card ecru">
+              <div class="step-card-header">
+                <div class="step-card-icon"><img src="https://www.figma.com/api/mcp/asset/bff5fe75-b4e0-45b8-9c17-064f520e6da9" alt=""></div>
+                <span class="step-card-label">Process Invoice</span>
+              </div>
+              <p class="step-card-text">Process the invoice as normal.</p>
+            </div>
+          </div>
+          <div class="process-images">
+            <img src="https://www.figma.com/api/mcp/asset/4beca26d-eabc-49ab-8833-5a9836addc89" alt="Process flow 1" class="process-image" style="width: 200px;">
+            <img src="https://www.figma.com/api/mcp/asset/4beca26d-eabc-49ab-8833-5a9836addc89" alt="Process flow 2" class="process-image" style="width: 200px;">
+            <img src="https://www.figma.com/api/mcp/asset/4beca26d-eabc-49ab-8833-5a9836addc89" alt="Process flow 3" class="process-image" style="width: 200px;">
+            <img src="https://www.figma.com/api/mcp/asset/4beca26d-eabc-49ab-8833-5a9836addc89" alt="Process flow 4" class="process-image" style="width: 200px;">
+            <img src="https://www.figma.com/api/mcp/asset/4beca26d-eabc-49ab-8833-5a9836addc89" alt="Process flow 5" class="process-image" style="width: 200px;">
+          </div>
+        </div>
+
+        <!-- Vendor Detail Changes -->
+        <div class="content-section">
+          <div class="sub-section-header mint-bg">
+            <h3>Vendor Detail Changes</h3>
+          </div>
+          <p class="body-text">This is the process for when a Vendor's information, such as account details, change after they have been put into the system.</p>
+          <p class="tbc-label">TBC</p>
+        </div>
+
+        <!-- Vendor Communications -->
+        <div class="content-section">
+          <div class="sub-section-header mint-bg">
+            <h3>Vendor Communications</h3>
+          </div>
+          <p class="body-text">To ensure consistency, compliance, and timely processing of invoices, all vendor communications must follow the guidelines below:</p>
+          <div class="info-cards">
+            <div class="info-card">
+              <div class="info-card-header">
+                <div class="number-badge apricot"><span class="bg-num">1</span><span class="fg-num">1</span></div>
+                <span class="info-card-title">Invoice Submission</span>
+              </div>
+              <div class="info-card-body">
+                <p>All vendors must send their invoices directly to:<br><a href="mailto:invoices@scrosswa.org.au">invoices@scrosswa.org.au</a></p>
+                <p>Invoices should not be forwards by staff or submitted via personal email accounts.</p>
+                <p><strong>Important:</strong></p>
+                <ul>
+                  <li>Invoices must be attached as PDF files to the email.</li>
+                  <li>Do not forward emails or attach emails within emails — KOFAX can only process the invoices that are attached as standalone documents.</li>
+                </ul>
+                <p><strong>Business Support Officers (BSOs)</strong> Must redirect any suppliers attempting to send invoice to them. Vendors should always submit invoice directly to the AP Inbox.</p>
+              </div>
+            </div>
+            <div class="info-card">
+              <div class="info-card-header">
+                <div class="number-badge mint"><span class="bg-num">2</span><span class="fg-num">2</span></div>
+                <span class="info-card-title">Payment &amp; General Enquiries</span>
+              </div>
+              <div class="info-card-body">
+                <p>For any queries related to payments, invoice status, or account details, vendors should contact:<br><a href="mailto:accpay@scrosswa.org.au">accpay@scrosswa.org.au</a></p>
+                <p>This centralised inbox ensures that all communications are tracked and responded to efficiently by the AP team.</p>
+              </div>
+            </div>
+            <div class="info-card">
+              <div class="info-card-header">
+                <div class="number-badge blue"><span class="bg-num">3</span><span class="fg-num">3</span></div>
+                <span class="info-card-title">Internal Communications Protocol</span>
+              </div>
+              <div class="info-card-body">
+                <ul>
+                  <li>AP Officers must use standardised response templates for common queries.<br>— See Onboarding Resources [link].</li>
+                  <li>All supplier communications must be sent from the <a href="mailto:accpay@scrosswa.org.au">accpay@scrosswa.org.au</a> address.</li>
+                  <li>Do not use personal work emails when contacting vendors — this helps maintain a professional and auditable communication trail.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- SECTION 3: PURCHASE-TO-PAY (paleblue theme)                  -->
+      <!-- ============================================================ -->
+      <div class="major-section">
+        <div class="section-header">
+          <img src="https://www.figma.com/api/mcp/asset/309cb67f-7e96-41e1-b12a-9103622ba27a" alt="" class="section-header-icon">
+          <h2 class="section-header-title">Purchase-to-Pay</h2>
+          <img src="https://www.figma.com/api/mcp/asset/65e69146-844c-4905-95b8-f61c17985d03" alt="" class="section-header-circle">
+        </div>
+
+        <div class="content-section">
+          <div class="sub-section-header blue-bg">
+            <h3>PR-to-PO-to-Three-Way Matching</h3>
+          </div>
+          <p class="tbc-label">TBC</p>
+        </div>
+
+        <div class="content-section">
+          <div class="sub-section-header blue-bg">
+            <h3>Purchase Requisitions (PR)</h3>
+          </div>
+          <p class="tbc-label">TBC</p>
+        </div>
+
+        <div class="content-section">
+          <div class="sub-section-header blue-bg">
+            <h3>Purchase Order (PO)</h3>
+          </div>
+          <p class="tbc-label">TBC</p>
+        </div>
+
+        <div class="content-section">
+          <div class="sub-section-header blue-bg">
+            <h3>Receipting a PO</h3>
+          </div>
+          <p class="tbc-label">TBC</p>
+        </div>
+
+        <div class="content-section">
+          <div class="sub-section-header blue-bg">
+            <h3>Purchasing Variances</h3>
+          </div>
+          <p class="tbc-label">TBC</p>
+        </div>
+
+        <div class="content-section">
+          <div class="sub-section-header blue-bg">
+            <h3>Punch Out</h3>
+          </div>
+          <p class="tbc-label">TBC</p>
+        </div>
+
+        <div class="content-section">
+          <div class="sub-section-header blue-bg">
+            <h3>Sandwai</h3>
+          </div>
+          <p class="tbc-label">TBC</p>
+        </div>
+
+        <div class="content-section">
+          <div class="sub-section-header blue-bg">
+            <h3>FMI Work Orders</h3>
+          </div>
+          <p class="tbc-label">TBC</p>
+        </div>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- SECTION 4: CAPITAL EXPENDITURE (ecru theme)                  -->
+      <!-- ============================================================ -->
+      <div class="major-section">
+        <div class="section-header">
+          <img src="https://www.figma.com/api/mcp/asset/309cb67f-7e96-41e1-b12a-9103622ba27a" alt="" class="section-header-icon">
+          <h2 class="section-header-title">Capital Expenditure</h2>
+          <img src="https://www.figma.com/api/mcp/asset/65e69146-844c-4905-95b8-f61c17985d03" alt="" class="section-header-circle">
+        </div>
+
+        <div class="content-section">
+          <div class="sub-section-header ecru-bg">
+            <h3>What is CapEx?</h3>
+          </div>
+          <p class="tbc-label">TBC</p>
+        </div>
+
+        <div class="content-section">
+          <div class="sub-section-header ecru-bg">
+            <h3>Standard Capital Expenditure Process</h3>
+          </div>
+          <p class="tbc-label">TBC</p>
+        </div>
+
+        <div class="content-section">
+          <div class="sub-section-header ecru-bg">
+            <h3>Asset &amp; Infrastructure Capital Expenditure Process</h3>
+          </div>
+          <p class="tbc-label">TBC</p>
+        </div>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- SECTION 5: WIP STAGING & GRNI (lilac theme)                  -->
+      <!-- ============================================================ -->
+      <div class="major-section">
+        <div class="section-header">
+          <img src="https://www.figma.com/api/mcp/asset/309cb67f-7e96-41e1-b12a-9103622ba27a" alt="" class="section-header-icon">
+          <h2 class="section-header-title">WIP Staging &amp; GRNI</h2>
+          <img src="https://www.figma.com/api/mcp/asset/65e69146-844c-4905-95b8-f61c17985d03" alt="" class="section-header-circle">
+        </div>
+
+        <div class="content-section">
+          <div class="sub-section-header lilac-bg">
+            <h3>WIP Staging &amp; GRNI Process</h3>
+          </div>
+          <p class="tbc-label">TBC</p>
+        </div>
+
+        <div class="content-section">
+          <div class="sub-section-header lilac-bg">
+            <h3>WIP Staging</h3>
+          </div>
+          <p class="tbc-label">TBC</p>
+        </div>
+
+        <div class="content-section">
+          <div class="sub-section-header lilac-bg">
+            <h3>GRNI</h3>
+          </div>
+          <p class="tbc-label">TBC</p>
+        </div>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- SECTION 6: COST WIP CAPTURE (paleyellow theme)               -->
+      <!-- ============================================================ -->
+      <div class="major-section">
+        <div class="section-header">
+          <img src="https://www.figma.com/api/mcp/asset/309cb67f-7e96-41e1-b12a-9103622ba27a" alt="" class="section-header-icon">
+          <h2 class="section-header-title">Cost WIP Capture</h2>
+          <img src="https://www.figma.com/api/mcp/asset/65e69146-844c-4905-95b8-f61c17985d03" alt="" class="section-header-circle">
+        </div>
+
+        <div class="content-section">
+          <div class="sub-section-header yellow-bg">
+            <h3>Cost WIP Capture</h3>
+          </div>
+          <p class="tbc-label">TBC</p>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+</body>
+</html>
