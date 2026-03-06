@@ -592,6 +592,9 @@ a { color: var(--navy); }
                 <div class="pr-step-content">
                   <p>Access Epicor ARM via SCCWA's intranet quick link titled "Invoice Process".</p>
                 </div>
+                <div style="background:var(--apricot-light);padding:8px;border-radius:8px;margin-left:60px;">
+                  <img src="https://www.figma.com/api/mcp/asset/d798f9f0-c2b8-471d-bdf1-8463b31d8467" alt="ARM Login Screenshot" style="max-width:372px;border-radius:4px;">
+                </div>
               </div>
 
               <!-- PR Step 2: Navigate -->
@@ -606,6 +609,9 @@ a { color: var(--navy); }
                 </div>
                 <div class="pr-step-content">
                   <p>Select New Requisition.</p>
+                </div>
+                <div style="background:var(--mint-light);padding:8px;border-radius:8px;margin-left:60px;">
+                  <img src="https://www.figma.com/api/mcp/asset/a5d3059a-9b58-49cc-a23e-6ef4a3a00fc1" alt="Requisition Entry Screenshot" style="max-width:374px;border-radius:4px;">
                 </div>
               </div>
 
@@ -666,21 +672,48 @@ a { color: var(--navy); }
 
             <!-- PR Approval Workflow -->
             <p class="section-body-title">PR Approval Workflow</p>
-            <div class="workflow-info">
-              <div class="workflow-box" style="background:var(--apricot-light);border-left:4px solid var(--apricot-accent);">
-                <p><strong>ARM automatically routes PRs based on:</strong></p>
-                <ul style="padding-left:24px;margin-top:8px;">
+            <div style="display:flex;gap:16px;">
+              <!-- Card 1 -->
+              <div style="background:white;border:1px solid var(--apricot);border-radius:0 12px 12px 12px;width:360px;padding:20px 20px 28px;display:flex;flex-direction:column;gap:16px;align-self:stretch;">
+                <div style="background:#efdec9;border-radius:100px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;padding:8px;">
+                  <span style="font-family:'Inter',sans-serif;font-weight:500;font-size:24px;color:var(--apricot-darker);">1</span>
+                </div>
+                <div style="background:#efdec9;border-radius:0 8px 8px 8px;display:flex;align-items:center;gap:10px;width:100%;">
+                  <div style="background:var(--apricot-dark);padding:12px;border-radius:0 4px 4px 4px;">
+                    <img src="https://www.figma.com/api/mcp/asset/65de7e67-7347-40ef-8916-0cc4a2bae87b" alt="" style="width:40px;height:40px;">
+                  </div>
+                  <p style="font-size:16px;font-weight:600;color:var(--navy);line-height:24px;">ARM automatically routes<br>PRs based on:</p>
+                </div>
+                <ul style="padding-left:24px;font-size:16px;line-height:24px;color:var(--navy);">
                   <li>Amount thresholds</li>
                   <li>Cost centre codes</li>
                   <li>Delegation of Authority (DoA) Matrix</li>
                 </ul>
               </div>
-              <div class="workflow-box" style="background:var(--mint-light);border-left:4px solid var(--mint-accent);">
-                <p>Approvers receive notifications in ARM or via email.</p>
+              <!-- Card 2 -->
+              <div style="background:white;border:1px solid var(--mint);border-radius:0 12px 12px 12px;width:360px;padding:20px 20px 28px;display:flex;flex-direction:column;gap:16px;align-self:stretch;">
+                <div style="background:var(--mint-light);border-radius:100px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;padding:8px;">
+                  <span style="font-family:'Inter',sans-serif;font-weight:500;font-size:24px;color:#3a7c65;">2</span>
+                </div>
+                <div style="background:var(--mint-light);border-radius:0 8px 8px 8px;display:flex;align-items:center;gap:10px;width:100%;">
+                  <div style="background:var(--mint);padding:12px;border-radius:0 4px 4px 4px;">
+                    <img src="https://www.figma.com/api/mcp/asset/65de7e67-7347-40ef-8916-0cc4a2bae87b" alt="" style="width:40px;height:40px;">
+                  </div>
+                  <p style="font-size:16px;font-weight:600;color:var(--navy);line-height:24px;">Approvers receive notifications<br>in ARM or via email.</p>
+                </div>
               </div>
-              <div class="workflow-box" style="background:var(--pale-blue);border-left:4px solid var(--pale-blue-accent);">
-                <p><strong>Approvers can:</strong></p>
-                <ul style="padding-left:24px;margin-top:8px;">
+              <!-- Card 3 -->
+              <div style="background:white;border:1px solid var(--pale-blue-dark);border-radius:0 12px 12px 12px;width:360px;padding:20px 20px 28px;display:flex;flex-direction:column;gap:16px;align-self:stretch;">
+                <div style="background:var(--pale-blue);border-radius:100px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;padding:8px;">
+                  <span style="font-family:'Inter',sans-serif;font-weight:500;font-size:24px;color:var(--pale-blue-accent);">3</span>
+                </div>
+                <div style="background:var(--pale-blue);border-radius:0 8px 8px 8px;display:flex;align-items:center;gap:10px;width:100%;">
+                  <div style="background:var(--pale-blue-dark);padding:12px;border-radius:0 4px 4px 4px;">
+                    <img src="https://www.figma.com/api/mcp/asset/65de7e67-7347-40ef-8916-0cc4a2bae87b" alt="" style="width:40px;height:40px;">
+                  </div>
+                  <p style="font-size:16px;font-weight:600;color:var(--navy);line-height:24px;">Approvers can:</p>
+                </div>
+                <ul style="padding-left:24px;font-size:16px;line-height:24px;color:var(--navy);">
                   <li>Approve (PO is generated)</li>
                   <li>Reject (PR must be edited and resubmitted)</li>
                   <li>Request Changes</li>
